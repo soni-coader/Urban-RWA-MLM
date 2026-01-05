@@ -114,7 +114,7 @@ const SignUpPage = () => {
         </Link>
         <div className="w-full max-w-xl">
           <div className="mb-5">
-            <img src={logo} className="w-20" alt="Logo" />
+            <img src={logo} className="w-40" alt="Logo" />
           </div>
           <h2 className="text-3xl font-bold mb-4">Create your account</h2>
           <p className="text-sm text-gray-400 mb-6">
@@ -218,7 +218,7 @@ const SignUpPage = () => {
                 value={formData.referral}
                 onChange={handleChange}
                 placeholder="Referral Code"
-                className="w-full px-4 py-3 rounded-md bg-secondary/10 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-3 rounded-md bg-blue/10 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
                 disabled={isLoading}
                 aria-label="Referral code input"
               />
@@ -226,7 +226,7 @@ const SignUpPage = () => {
 
             <button
               type="submit"
-              className={`w-full py-3 rounded-md bg-gradient-to-br from-[#2298d341] to-[#05CE99] hover:opacity-90 transition-colors font-semibold ${
+              className={`w-full py-3 rounded-md bg-gradient-to-br from-blue-700 to-blue-600 hover:opacity-90 transition-colors font-semibold ${
                 isLoading ? "opacity-50 cursor-not-allowed" : ""
               }`}
               disabled={isLoading}

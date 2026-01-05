@@ -10,7 +10,7 @@ const networks = [bscTestnet, bsc];
 const metadata = {
   name: 'EM Bot',
   description: 'EM Bot Presale',
-  url: 'https://embot.co' || 'http://localhost:5173',
+  url: 'https://urawt.co' || 'http://localhost:5173',
   icons: ['https://assets.reown.com/reown-profile-pic.png']
 }
 

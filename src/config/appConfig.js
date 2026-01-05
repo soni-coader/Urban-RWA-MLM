@@ -1,6 +1,6 @@
 export const appConfig = {
-  baseURL: "https://api.embot.co",
-  frontendURL: "https://embot.co",
+  baseURL: "https://backendapi.urbanrwa.io",
+  frontendURL: "https://urwat.co",
   chainID: 56n,
   defaultReferral: "7f8bbeb6",
   DEPOSIT_ADDRESS :'0xcEB52e87ef0bcD34C895965aea6Ae0a85D9A5bF3',

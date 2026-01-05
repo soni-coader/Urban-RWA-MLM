@@ -347,10 +347,10 @@ const Sidebar = () => {
         <Link to="/" className="transition-transform duration-200 hover:scale-105">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
-              <img className="drop-shadow-sm" src={logo1} alt="Logo" width={100} />
+              <img className="drop-shadow-sm" src={logo1} alt="Logo" width={150} />
             </>
           ) : (
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md bg-white">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center   bg-white">
               <img src={logo2} alt="Logo" width={50} className="" />
             </div>
           )}

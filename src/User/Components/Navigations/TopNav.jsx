@@ -40,7 +40,7 @@ const TopNav = () => {
       <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
         <div className="flex items-center justify-between w-full gap-2 px-3 py-3 border-b border-gray-200 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4">
           <button
-            className="items-center justify-center w-10 h-10 text-gray-500 border-gray-200 rounded-lg lg:flex lg:h-11 lg:w-11 lg:border hover:bg-gray-50 transition-colors"
+            className="items-center justify-center w-10 h-10 text-gray-500 border-blue-300 rounded-lg lg:flex lg:h-11 lg:w-11 lg:border hover:bg-gray-50 transition-colors"
             onClick={handleToggle}
             aria-label="Toggle Sidebar"
           >

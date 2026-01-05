@@ -14,25 +14,30 @@ const VerifyUserPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [errors, setErrors] = useState({});
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(60); // Start with 60 seconds
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false); // Track if OTP was sent
+  const [verificationType, setVerificationType] = useState("signup"); // Track if it's login or signup
 
   useEffect(() => {
     // Pre-fill email from navigation state if available
     const email = location.state?.email || "";
+    const type = location.state?.type || "signup"; // Get type from state (login or signup)
     if (email) {
       setFormData((prev) => ({ ...prev, email }));
       setIsEmailSent(true); // Assume OTP was sent if email is passed
       setTimer(60); // Start timer for resend OTP
+      setVerificationType(type); // Set verification type
     }
+  }, [location.state]);
 
-    let countdown;
+  // Separate timer countdown effect
+  useEffect(() => {
     if (timer > 0) {
-      countdown = setTimeout(() => setTimer((prev) => prev - 1), 1000);
+      const countdown = setTimeout(() => setTimer((prev) => prev - 1), 1000);
+      return () => clearTimeout(countdown);
     }
-    return () => clearTimeout(countdown);
-  }, [timer, location.state]);
+  }, [timer]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,9 +63,9 @@ const VerifyUserPage = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(`${appConfig.baseURL}/user/auth/resend-otp`, {
+      const response = await axios.post(`${appConfig.baseURL}/api/auth/resend-otp`, {
         email: formData.email,
-        purpose: "signup",
+        type: verificationType,
       });
       toast.success(response.data.message || `New OTP sent to ${formData.email}`);
       setTimer(60);
@@ -82,20 +87,26 @@ const VerifyUserPage = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(`${appConfig.baseURL}/user/auth/verify-otp`, {
+      const response = await axios.post(`${appConfig.baseURL}/api/auth/verify-user`, {
         email: formData.email,
         otp: formData.otp,
+        type: verificationType,
       });
-      toast.success(response.data.message || "Email verified successfully");
+      const result = response.data;
 
-      // Assuming the backend returns a token or user data
-      const { token } = response.data; // Adjust based on your API response
-      if (token) {
-        const storage = localStorage.getItem("rememberMe") === "true" ? localStorage : sessionStorage;
-        storage.setItem("authToken", token);
+      const successMessage = verificationType === "login"
+        ? "Login successful! Redirecting..."
+        : "Email verified successfully! Redirecting...";
+
+      toast.success(result.message || successMessage);
+
+      // Store token in localStorage
+      if (result.token) {
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("authToken", result.token); // Keep for compatibility
       }
 
-      setTimeout(() => navigate("/user/dashboard", { replace: true }), 1000); // Navigate to dashboard with delay
+      setTimeout(() => navigate("/user/dashboard", { replace: true }), 1000);
     } catch (error) {
       toast.error(error.response?.data?.message || "Invalid OTP");
       setErrors((prev) => ({ ...prev, otp: error.response?.data?.message || "Invalid OTP" }));
@@ -128,10 +139,10 @@ const VerifyUserPage = () => {
         </div>
       </div>
 
-      <div className="w-full relative h-full overflow-y-auto flex justify-center md:w-1/2 p-8 md:p-12">
+      <div className="w-full relative h-full overflow-y-auto flex justify-center md:w-1/2 p-8 md:p-12 bg-white">
         <Link
           to="/"
-          className="absolute top-5 right-5 text-xs text-white bg-white/10 px-4 py-1 rounded-full backdrop-blur-md"
+          className="absolute top-5 right-5 text-xs text-gray-700 bg-gray-100 hover:bg-gray-200 px-4 py-1 rounded-full transition-colors"
           aria-label="Back to website"
         >
           Back to website →
@@ -140,9 +151,14 @@ const VerifyUserPage = () => {
           <div className="mb-5">
             <img src={logo} className="w-20" alt="Logo" />
           </div>
-          <h2 className="text-3xl font-bold mb-4">Verify your email</h2>
-          <p className="text-sm text-gray-400 mb-6">
-            Enter the OTP sent to {formData.email || "your email"} to verify your account.
+          <h2 className="text-3xl font-bold mb-4 text-gray-800">
+            {verificationType === "login" ? "Verify Login" : "Verify your email"}
+          </h2>
+          <p className="text-sm text-gray-600 mb-6">
+            {verificationType === "login"
+              ? `Enter the OTP sent to ${formData.email || "your email"} to complete login.`
+              : `Enter the OTP sent to ${formData.email || "your email"} to verify your account.`
+            }
           </p>
 
           <form className="space-y-4" onSubmit={handleSubmit} noValidate>
@@ -153,7 +169,7 @@ const VerifyUserPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Email"
-                className="w-full px-4 py-3 rounded-md bg-secondary/10 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-3 rounded-md bg-gray-50 text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
                 disabled={isLoading || isEmailSent} // Disable after OTP is sent
                 aria-label="Email input"
               />
@@ -165,14 +181,14 @@ const VerifyUserPage = () => {
             </div>
 
             <div>
-              <div className="w-full relative rounded-md bg-secondary/10 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary">
+              <div className="w-full relative rounded-md bg-gray-50 border border-gray-300 focus-within:ring-2 focus-within:ring-primary">
                 <input
                   type="text"
                   name="otp"
                   value={formData.otp}
                   onChange={handleChange}
                   placeholder="Enter OTP"
-                  className="bg-transparent h-full px-4 py-3 w-full"
+                  className="bg-transparent text-gray-800 h-full px-4 py-3 w-full focus:outline-none"
                   disabled={isLoading}
                   inputMode="numeric" // Suggest numeric keyboard
                   pattern="\d*" // Ensure only numbers
@@ -182,11 +198,10 @@ const VerifyUserPage = () => {
                   type="button"
                   disabled={timer > 0 || isLoading}
                   onClick={handleResendOtp}
-                  className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-nowrap border px-3 rounded-full text-xs py-1 transition-all duration-200 ${
-                    timer > 0 || isLoading
-                      ? "cursor-not-allowed bg-gray-500 text-white border-gray-500"
-                      : "bg-white/10 border-slate-600 hover:bg-white/20"
-                  }`}
+                  className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-nowrap border px-3 rounded-full text-xs py-1 transition-all duration-200 ${timer > 0 || isLoading
+                    ? "cursor-not-allowed bg-gray-400 text-white border-gray-400"
+                    : "bg-gray-800 text-white border-gray-800 hover:bg-gray-900"
+                    }`}
                   aria-label={timer > 0 ? `Resend OTP in ${timer} seconds` : "Resend OTP"}
                 >
                   {timer > 0 ? `Resend OTP (${timer}s)` : "Resend OTP"}
@@ -201,9 +216,8 @@ const VerifyUserPage = () => {
 
             <button
               type="submit"
-              className={`w-full py-3 rounded-md bg-gradient-to-br from-[#2298d341] to-[#05CE99] hover:opacity-90 transition-colors font-semibold ${
-                isLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`w-full py-3 rounded-md bg-gradient-to-br from-blue-500 to-blue-700 text-white hover:opacity-90 transition-colors font-semibold ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               disabled={isLoading}
               aria-label="Verify email button"
             >
@@ -212,18 +226,18 @@ const VerifyUserPage = () => {
           </form>
 
           <div className="my-6 flex items-center gap-4">
-            <hr className="flex-1 border-gray-600" />
-            <span className="text-gray-400 text-sm">
+            <hr className="flex-1 border-gray-300" />
+            <span className="text-gray-600 text-sm">
               Back to{" "}
               <Link
                 to="/user/signup"
-                className="text-secondary underline-offset-4 hover:underline text-nowrap"
+                className="text-blue-600 underline-offset-4 hover:underline text-nowrap"
                 aria-label="Back to sign up"
               >
                 Sign Up
               </Link>
             </span>
-            <hr className="flex-1 border-gray-600" />
+            <hr className="flex-1 border-gray-300" />
           </div>
         </div>
       </div>

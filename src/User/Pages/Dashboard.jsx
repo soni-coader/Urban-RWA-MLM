@@ -314,31 +314,31 @@ const Dashboard = () => {
   return (
     <div className="text-white p-0 overflow-x-hidden">
       {/* Demo Mode Indicator */}
-      {isDemoMode && (
-        <div className="mb-4 p-4 bg-gradient-to-r from-green-500/20 to-blue-500/20 border-2 border-green-500/40 rounded-xl animate-pulse">
+      {/* {isDemoMode && (
+        <div className="mb-4 p-4 bg-gradient-to-r from-blue-500/20 to-blue-500/20 border-2 border-blue-500/40 rounded-xl animate-pulse">
           <div className="flex items-center gap-3">
             <span className="text-2xl">🚀</span>
             <div className="flex-1">
-              <p className="text-green-400 font-bold text-sm">Demo Mode Active</p>
+              <p className="text-blue-400 font-bold text-sm">Demo Mode Active</p>
               <p className="text-xs text-black mt-1">
                 You're viewing sample data. No real API calls are being made. Perfect for UI/UX testing!
               </p>
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-2xl uppercase text-primary font-bold">
+          <h1 className="text-2xl uppercase text-blue-700 font-bold">
             Welcome, {displayData?.userName}! Have a nice day!
           </h1>
         </div>
         <div className="flex items-center gap-4">
           {shouldShowButton && (
             <button
-              className="flex animate-pulse items-center gap-2 px-4 py-2 bg-green-500 rounded-lg transition-colors pulse-animation"
+              className="flex animate-pulse items-center gap-2 px-4 py-2 bg-blue-500 rounded-lg transition-colors pulse-animation"
               onClick={() => navigate("/user/deposits")}
               title="Retopup & Reinvest"
               aria-label="Retopup and Reinvest"
@@ -348,7 +348,7 @@ const Dashboard = () => {
             </button>
           )}
           {/* <button
-            className="p-2 bg-secondary rounded-lg hover:bg-sky-700 transition-colors"
+            className="p-2 bg-secondary rounded-lg hover:bg-blue-700 transition-colors"
             onClick={() => navigate("/user/settings")}
             title="Settings"
             aria-label="Settings"
@@ -356,7 +356,7 @@ const Dashboard = () => {
             <FaCog className="w-5 h-5" />
           </button> */}
           <div className="flex items-center gap-2 bg-slate-800 px-4 py-2 rounded-lg">
-            <div className="w-8 h-8 bg-sky-500 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
               <span className="text-sm font-bold">
                 {displayData.userName
                   .split(" ")
@@ -379,38 +379,38 @@ const Dashboard = () => {
               title: "Total Investment",
               value: displayData.wallets?.totalInvestment || "$0.00",
               color: "bg-purple-500",
-              icon: <FaDollarSign />,
+              icon: <FaDollarSign className="text-white" />,
             },
 
             {
               title: "Available Wallet Balance",
               value: displayData.wallets?.totalWalletBalance || "$0.00",
-              color: "bg-sky-500",
-              icon: <FaDollarSign />,
+              color: "bg-blue-500",
+              icon: <FaDollarSign className="text-white" />,
             },
             {
               title: "Total ROI",
               value: displayData.incomes?.roiIncome || "$0.00",
               color: "bg-orange-500",
-              icon: <FaChartLine />,
+              icon: <FaChartLine className="text-white" />,
             },
             {
               title: "Total Level Rewards",
               value: displayData.incomes?.totalLevelRewards || "$0.00",
-              color: "bg-green-500",
-              icon: <FaBullseye />,
+              color: "bg-blue-500",
+              icon: <FaBullseye className="text-white" />,
             },
             {
               title: "Total Referral Rewards",
               value: displayData.incomes?.levelIncome || "$0.00",
-              color: "bg-sky-500",
-              icon: <FaDollarSign />,
+              color: "bg-blue-500",
+              icon: <FaDollarSign className="text-white" />,
             },
             {
               title: "Total Earnings",
               value: displayData.profitTracker?.earning || "$0.00",
-              color: "bg-sky-500",
-              icon: <FaDollarSign />,
+              color: "bg-blue-500",
+              icon: <FaDollarSign className="text-white" />,
             },
           ].map((item, idx) => (
             <div
@@ -443,7 +443,7 @@ const Dashboard = () => {
               balance: displayData.wallets?.principleWallet || "0.00",
             },
             {
-              name: "Emgt Wallet",
+              name: "URWA Wallet",
               balance: displayData.wallets?.emgtWallet || "0.00",
             },
             {
@@ -462,7 +462,7 @@ const Dashboard = () => {
               >
                 <div className="flex flex-col-reverse gap-3 justify-between">
                   <h2 className="text-sm font-semibold flex items-center gap-2">
-                    <FaWallet className="text-primary" />
+                    <FaWallet className="text-blue-700" />
                     {wallet.name}
                   </h2>
                   <span className="text-xs text-slate-800">
@@ -533,7 +533,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
         <div className="theme-card-style border-gradient p-6">
           <div className="mb-5">
-            <h3 className="text-lg font-semibold text-primary mb-2">
+            <h3 className="text-lg font-semibold text-blue-700 mb-2">
               TOTAL INCOMES
             </h3>
             <p className="text-sm leading-tight  ">
@@ -543,8 +543,8 @@ const Dashboard = () => {
           </div>
           <div className="flex justify-center mb-4">
             <div className="relative">
-              <div className="w-44 h-44 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
-                <GiTakeMyMoney className="h-20 w-20" />
+              <div className="w-44 h-44 bg-gradient-to-br from-blue-700 to-secondary rounded-full flex items-center justify-center">
+                <GiTakeMyMoney className="h-20 w-20 text-white" />
               </div>
               <div className="absolute -top-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
                 <span className="text-xs font-bold">%</span>
@@ -577,11 +577,11 @@ const Dashboard = () => {
         <div className="space-y-5">
           <div className="theme-card-style border-gradient p-6">
             <div
-              className={`w-8 h-8 bg-green-500 mb-3 rounded-full flex items-center justify-center`}
+              className={`w-8 h-8 bg-blue-500 mb-3 rounded-full flex items-center justify-center`}
             >
               <FaUsers />
             </div>
-            <h3 className="text-lg font-semibold text-primary mb-4">
+            <h3 className="text-lg font-semibold text-blue-700 mb-4">
               REFERRAL LINK
             </h3>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 bg-slate-700 rounded-lg p-3">
@@ -589,11 +589,11 @@ const Dashboard = () => {
                 type="text"
                 value={isDemoMode ? `${appConfig.frontendURL}/user/signup?referral=DEMO2026` : displayData.referralLink}
                 readOnly
-                className="flex-1 bg-transparent text-sky-300 text-sm outline-none w-full sm:w-auto"
+                className="flex-1 bg-transparent text-blue-300 text-sm outline-none w-full sm:w-auto"
               />
               <button
                 onClick={handleCopy}
-                className="bg-primary mt-3 sm:mt-0 hover:bg-[#38a861] px-4 py-1 rounded text-sm transition-colors"
+                className="bg-blue-400 mt-3 sm:mt-0 hover:bg-blye-600 px-4 py-1 rounded text-sm transition-colors"
               >
                 {copied ? "Copied!" : "Copy"}
               </button>
@@ -601,7 +601,7 @@ const Dashboard = () => {
           </div>
 
           <div className="theme-card-style border-gradient p-6">
-            <h3 className="text-lg font-semibold text-primary mb-4">
+            <h3 className="text-lg font-semibold text-blue-700 mb-4">
               TEAM BUSINESS OVERVIEW
             </h3>
             <div className="space-y-4">
@@ -636,7 +636,7 @@ const Dashboard = () => {
         </div>
 
         <div className="theme-card-style border-gradient p-6">
-          <h3 className="text-lg font-semibold text-primary mb-4">
+          <h3 className="text-lg font-semibold text-blue-700 mb-4">
             PROFIT TRACKER
           </h3>
           <div className="space-y-2 text-sm">
@@ -675,7 +675,7 @@ const Dashboard = () => {
                 loader={<div className="text-white">Loading chart...</div>}
               />
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-700 to-secondary rounded-full flex items-center justify-center">
                   <GiProfit className="text-white w-10 h-10" />
                 </div>
               </div>
@@ -688,11 +688,11 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
         <div className="theme-card-style border-gradient p-6 flex flex-col justify-center text-center">
           <div
-            className={`w-full mb-4 h-14 mx-auto bg-gradient-to-br from-green-500 to-secondary rounded-md flex items-center justify-center`}
+            className={`w-full mb-4 h-14 mx-auto bg-gradient-to-br from-blue-500 to-secondary rounded-md flex items-center justify-center`}
           >
-            <TbPigMoney className="text-2xl" />
+            <TbPigMoney className="text-2xl text-white " />
           </div>
-          <h3 className="text-lg font-semibold text-primary mb-4">
+          <h3 className="text-lg font-semibold text-blue-700 mb-4">
             INVESTMENT OVERVIEW
           </h3>
           <p className="text-sm text-slate-400">Total Investment</p>
@@ -705,9 +705,9 @@ const Dashboard = () => {
           <div className="grid grid-cols-2 gap-4 text-center">
             <div className="space-y-4">
               <div
-                className={`w-full h-14 mx-auto bg-gradient-to-br from-green-500 to-secondary rounded-md flex items-center justify-center`}
+                className={`w-full h-14 mx-auto bg-gradient-to-br from-blue-500 to-secondary rounded-md flex items-center justify-center`}
               >
-                <MdOutlineCalendarMonth className="text-2xl" />
+                <MdOutlineCalendarMonth className="text-2xl text-white" />
               </div>
               <p className="text-sm text-slate-400">Monthly ROI Income</p>
               <p className="text-xl font-bold">
@@ -716,9 +716,9 @@ const Dashboard = () => {
             </div>
             <div className="space-y-4">
               <div
-                className={`w-full h-14 mx-auto bg-gradient-to-br from-green-500 to-secondary rounded-md flex items-center justify-center`}
+                className={`w-full h-14 mx-auto bg-gradient-to-br from-blue-500 to-secondary rounded-md flex items-center justify-center`}
               >
-                <IoTodayOutline className="text-2xl" />
+                <IoTodayOutline className="text-2xl text-white" />
               </div>
               <p className="text-sm text-slate-400">Daily ROI Income</p>
               <p className="text-xl font-bold">
@@ -754,7 +754,7 @@ const Dashboard = () => {
         </div>
 
         {/* <div className="md:col-span-2 bg-[#12212154] backdrop-blur-xl border-gradient p-6 border border-slate-700 shadow-md shadow-slate-800/50 text-center">
-          <h3 className="text-lg font-semibold text-primary mb-4">TRANSACTIONS</h3>
+          <h3 className="text-lg font-semibold text-blue-700 mb-4">TRANSACTIONS</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <div className={`w-14 mb-4 h-14 mx-auto bg-gradient-to-br from-cyan-500 to-secondary rounded-full flex items-center justify-center`}>
@@ -780,17 +780,17 @@ const Dashboard = () => {
           {
             title: "Total Team",
             value: displayData.teamStats?.totalTeam || 0,
-            icon: <FaPeopleGroup className="text-2xl" />,
+            icon: <FaPeopleGroup className="text-2xl text-white" />,
           },
           {
             title: "My Direct",
             value: displayData.teamStats?.myDirect || 0,
-            icon: <BsMicrosoftTeams className="text-2xl" />,
+            icon: <BsMicrosoftTeams className="text-2xl text-white" />,
           },
           {
             title: "Indirect",
             value: displayData.teamStats?.indirect || 0,
-            icon: <FaPeopleArrows className="text-2xl" />,
+            icon: <FaPeopleArrows className="text-2xl text-white" />,
           },
         ].map((label, idx) => (
           <div
@@ -808,7 +808,7 @@ const Dashboard = () => {
         ))}
 
         <div className="theme-card-style border-gradient lg:col-span-2 p-6 text-center">
-          <h3 className="text-lg font-semibold text-primary mb-4">
+          <h3 className="text-lg font-semibold text-blue-700 mb-4">
             EASY MONEY TOKEN OVERVIEW
           </h3>
           <div className="flex items-center justify-center mx-auto mb-3">
@@ -816,7 +816,7 @@ const Dashboard = () => {
           </div>
           <p className="text-lg font-bold mb-1">Easy Money Token Price</p>
           <p className="text-white text-sm">
-            1 EMGT = USDT {displayData.tokenOverview?.price || "0"}
+            1 URWA = USDT {displayData.tokenOverview?.price || "0"}
           </p>
         </div>
       </div>
@@ -825,36 +825,36 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
         <div className="relative theme-card-style border-gradient lg:col-span-2 p-6">
           <div className="absolute right-0 top-0">
-            <BiSolidOffer className="text-[6rem] text-green-500" />
+            <BiSolidOffer className="text-[6rem] text-blue-500" />
           </div>
           <div className="flex items-center gap-4">
             <div
-              className={`w-14 mb-4 h-14 glow-text bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center`}
+              className={`w-14 mb-4 h-14 glow-text bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center`}
             >
               <GrAnnounce className="text-2xl" />
             </div>
-            <h3 className="text-lg font-semibold glow-text text-primary mb-4">
+            <h3 className="text-lg font-semibold glow-text text-blue-700 mb-4">
               LATEST ANNOUNCEMENT
             </h3>
           </div>
-          <h4 className="text-xl glow-text font-bold mb-4">
+          <h4 className="text-xl   font-bold mb-4">
             Empowering Decentralized Income with Easy Money
           </h4>
-          <p className=" glow-text text-sm leading-relaxed">
+          <p className="   text-sm leading-relaxed">
             Easy Money Project is a next-gen blockchain-based MLM (Multi-Level
             Marketing) platform designed to empower individuals with a
             decentralized, secure, and transparent income model.
           </p>
         </div>
         <div className="theme-card-style border-gradient p-6 text-center">
-          <h3 className="text-lg font-semibold text-primary mb-4">
+          <h3 className="text-lg font-semibold text-blue-700 mb-4">
             LEVEL ACHIEVEMENT
           </h3>
           <div className="text-yellow-500 font-bold mb-2">
             {displayData.wallets?.latestLevelRank || "N/A"}
           </div>
           <button
-            className="bg-secondary hover:bg-sky-700 text-white py-2 px-4 rounded text-sm"
+            className="bg-secondary hover:bg-blue-700 text-white py-2 px-4 rounded text-sm"
             onClick={() => navigate("/user/lavel-income-report")}
           >
             View Report

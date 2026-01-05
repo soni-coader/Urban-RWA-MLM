@@ -69,8 +69,9 @@ const ForgotPasswordPage = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(`${appConfig.baseURL}/user/auth/forgot-password`, {
+      const response = await axios.post(`${appConfig.baseURL}/api/auth/resend-otp`, {
         email: formData.email,
+        "type": "reset"
       });
       setOtpSent(true);
       setTimer(60);
@@ -94,10 +95,11 @@ const ForgotPasswordPage = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.post(`${appConfig.baseURL}/user/auth/reset-password`, {
+      const response = await axios.post(`${appConfig.baseURL}/api/auth/reset-password`, {
         email: formData.email,
         otp: formData.otp,
-        newPassword: formData.newPassword,
+        new_password: formData.newPassword,
+        confirm_password: formData.confirmPassword,
       });
       toast.success(response.data.message || "Password reset successfully");
       setTimeout(() => navigate("/user/login", { replace: true }), 1000); // Delay for toast visibility
@@ -140,10 +142,10 @@ const ForgotPasswordPage = () => {
         </div>
       </div>
 
-      <div className="w-full relative min-h-screen md:h-full overflow-y-auto flex items-center justify-center md:w-1/2 p-8 md:p-12">
+      <div className="w-full relative min-h-screen md:h-full overflow-y-auto flex items-center justify-center md:w-1/2 p-8 md:p-12 bg-white">
         <Link
           to="/"
-          className="absolute top-5 right-5 text-xs text-white bg-white/10 px-4 py-1 rounded-full backdrop-blur-md"
+          className="absolute top-5 right-5 text-xs text-gray-700 bg-gray-100 hover:bg-gray-200 px-4 py-1 rounded-full transition-colors"
           aria-label="Back to website"
         >
           Back to website →
@@ -152,22 +154,22 @@ const ForgotPasswordPage = () => {
           <div className="mb-5">
             <img src={logo} className="w-20" alt="Logo" />
           </div>
-          <h2 className="text-3xl font-bold mb-4">Reset Your Password</h2>
-          <p className="text-sm text-gray-400 mb-6">
+          <h2 className="text-3xl font-bold mb-4 text-gray-800">Reset Your Password</h2>
+          <p className="text-sm text-gray-600 mb-6">
             Enter your email to receive an OTP, then use it to set a new password.
           </p>
 
           <form className="space-y-4" onSubmit={handleSubmit} noValidate>
             {/* Email + Send OTP */}
             <div>
-              <div className="w-full relative rounded-md bg-secondary/10 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary">
+              <div className="w-full relative rounded-md bg-gray-50 border border-gray-300 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-700">
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Email"
-                  className="bg-transparent h-full px-4 py-3 w-full"
+                  className="bg-transparent text-gray-800 h-full px-4 py-3 w-full focus:outline-none"
                   disabled={isLoading || otpSent}
                   autoFocus
                   aria-label="Email input"
@@ -176,11 +178,10 @@ const ForgotPasswordPage = () => {
                   type="button"
                   disabled={isLoading || timer > 0}
                   onClick={handleSendOtp}
-                  className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-nowrap border px-3 rounded-full text-xs py-1 transition-all duration-200 ${
-                    isLoading || timer > 0
-                      ? "cursor-not-allowed bg-gray-500 text-white border-gray-500"
-                      : "bg-slate-900 border-slate-600 hover:bg-white hover:text-black"
-                  }`}
+                  className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-nowrap border px-3 rounded-full text-xs py-1 transition-all duration-200 ${isLoading || timer > 0
+                    ? "cursor-not-allowed bg-gray-400 text-white border-gray-400"
+                    : "bg-gray-800 text-white border-gray-800 hover:bg-gray-900"
+                    }`}
                   aria-label={isLoading ? "Sending OTP" : timer > 0 ? `Resend OTP in ${timer} seconds` : "Send OTP"}
                 >
                   {isLoading ? (
@@ -226,7 +227,7 @@ const ForgotPasswordPage = () => {
                     value={formData.otp}
                     onChange={handleChange}
                     placeholder="Enter OTP"
-                    className="w-full px-4 py-3 rounded-md bg-secondary/10 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-3 rounded-md bg-gray-50 text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-700"
                     disabled={isLoading}
                     inputMode="numeric"
                     pattern="\d*"
@@ -246,7 +247,7 @@ const ForgotPasswordPage = () => {
                     value={formData.newPassword}
                     onChange={handleChange}
                     placeholder="New Password"
-                    className="w-full px-4 py-3 rounded-md bg-secondary/10 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-3 rounded-md bg-gray-50 text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-700"
                     disabled={isLoading}
                     aria-label="New password input"
                   />
@@ -254,9 +255,8 @@ const ForgotPasswordPage = () => {
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
                     disabled={isLoading}
-                    className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-lg hover:text-gray-300 transition-colors ${
-                      isLoading ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
+                    className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg hover:text-gray-800 transition-colors ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -275,7 +275,7 @@ const ForgotPasswordPage = () => {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     placeholder="Confirm Password"
-                    className="w-full px-4 py-3 rounded-md bg-secondary/10 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-3 rounded-md bg-gray-50 text-gray-800 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-700"
                     disabled={isLoading}
                     aria-label="Confirm password input"
                   />
@@ -283,9 +283,8 @@ const ForgotPasswordPage = () => {
                     type="button"
                     onClick={() => setShowConfirmPassword((prev) => !prev)}
                     disabled={isLoading}
-                    className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-white text-lg hover:text-gray-300 transition-colors ${
-                      isLoading ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
+                    className={`absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg hover:text-gray-800 transition-colors ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
                     aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
                   >
                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
@@ -300,27 +299,26 @@ const ForgotPasswordPage = () => {
             )}
 
             <div className="my-6 flex items-center gap-4">
-              <hr className="flex-1 border-gray-600" />
-              <span className="text-gray-400 text-sm">
+              <hr className="flex-1 border-gray-300" />
+              <span className="text-gray-600 text-sm">
                 I remember my password{" "}
                 <Link
                   to="/user/login"
-                  className="text-secondary underline-offset-4 hover:underline text-nowrap"
+                  className="text-blue-600 underline-offset-4 hover:underline text-nowrap"
                   aria-label="Sign in link"
                 >
                   Sign In
                 </Link>
               </span>
-              <hr className="flex-1 border-gray-600" />
+              <hr className="flex-1 border-gray-300" />
             </div>
 
             {/* Final Submit */}
             {otpSent && (
               <button
                 type="submit"
-                className={`w-full py-3 rounded-md bg-gradient-to-br from-[#2298d341] to-[#05CE99] hover:opacity-90 transition-colors font-semibold ${
-                  isLoading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`w-full py-3 rounded-md bg-gradient-to-br from-blue-500 to-blue-700 text-white hover:opacity-90 transition-colors font-semibold ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 disabled={isLoading}
                 aria-label="Reset password button"
               >

@@ -12,13 +12,11 @@ const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    otp: "",
     remember: localStorage.getItem("rememberMe") === "true",
   });
-  const [errors, setErrors] = useState({ email: "", password: "", otp: "" });
+  const [errors, setErrors] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [otpRequested, setOtpRequested] = useState(false);
   const [demoMode, setDemoMode] = useState(false);
 
   // Check if already logged in on mount
@@ -55,45 +53,8 @@ const LoginPage = () => {
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters.";
     }
-    if (otpRequested && !formData.otp) {
-      newErrors.otp = "OTP is required.";
-    } else if (otpRequested && !/^\d{6}$/.test(formData.otp)) {
-      newErrors.otp = "OTP must be a 6-digit number.";
-    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const handleRequestOTP = async () => {
-    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
-      setErrors((prev) => ({
-        ...prev,
-        email: formData.email ? "Enter a valid email address." : "Email is required.",
-      }));
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const response = await axios.post(`${appConfig.baseURL}/user/auth/resend-otp`, {
-        email: formData.email,
-        purpose: "login",
-      });
-      const { message } = response.data;
-      toast.success(message || "OTP sent to your email!");
-      setOtpRequested(true);
-    } catch (error) {
-      const errorMessage = error.response?.data?.message || "Failed to send OTP.";
-      if (errorMessage === "User not found") {
-        setErrors((prev) => ({ ...prev, email: "User not found." }));
-      } else if (errorMessage === "Too many OTP resend attempts. Please try again later.") {
-        toast.error(errorMessage);
-      } else {
-        toast.error(errorMessage);
-      }
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -115,43 +76,29 @@ const LoginPage = () => {
 
     if (!validate()) return;
 
-    if (!otpRequested) {
-      await handleRequestOTP();
-      return;
-    }
-
     setIsLoading(true);
     try {
-      const response = await axios.post(`${appConfig.baseURL}/user/auth/login`, {
+      const response = await axios.post(`${appConfig.baseURL}/api/auth/login`, {
         email: formData.email,
         password: formData.password,
-        otp: formData.otp,
       });
-      const { message, data } = response.data;
-      const { token } = data;
+      const { message } = response.data;
 
-      if (token) {
-        const storage = formData.remember ? localStorage : sessionStorage;
-        storage.setItem("authToken", token);
-        if (formData.remember) {
-          localStorage.setItem("rememberMe", "true");
-        } else {
-          localStorage.removeItem("rememberMe");
-        }
-        toast.success(message || "Login successful!");
-        setTimeout(() => navigate("/user/dashboard", { replace: true }), 1000);
-      } else {
-        toast.error("Login failed: No token received");
-      }
+      // OTP sent successfully, redirect to verify page
+      toast.success(message || "Login OTP sent to your email for verification");
+
+      // Pass email and type to verify page via state
+      navigate("/user/verify-user", {
+        state: {
+          email: formData.email,
+          type: "login"
+        },
+        replace: true
+      });
+
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Invalid email, password, or OTP.";
-      if (errorMessage === "Email not verified") {
-        navigate("/user/verify-user", { replace: true });
-        toast.info("Please verify your email before proceeding.");
-      } else if (errorMessage === "Invalid OTP" || errorMessage === "OTP expired") {
-        setErrors((prev) => ({ ...prev, otp: errorMessage }));
-        toast.error(errorMessage);
-      } else if (errorMessage === "Invalid credentials") {
+      const errorMessage = error.response?.data?.message || "Invalid email or password.";
+      if (errorMessage === "Invalid credentials" || errorMessage === "User not found") {
         setErrors((prev) => ({
           ...prev,
           email: errorMessage,
@@ -189,40 +136,38 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-      <div className="w-full relative min-h-screen md:min-h-auto flex items-center justify-center md:w-1/2 p-8 md:p-12">
+      <div className="w-full relative min-h-screen md:min-h-auto flex items-center justify-center md:w-1/2 p-8 md:p-12 bg-white">
         <Link
           to="/"
-          className="absolute top-5 right-5 text-xs text-white bg-white/10 px-4 py-1 rounded-full backdrop-blur-md"
+          className="absolute top-5 right-5 text-xs text-gray-700 bg-gray-100 hover:bg-gray-200 px-4 py-1 rounded-full transition-colors"
           aria-label="Back to website"
         >
           Back to website →
         </Link>
         <div className="w-full max-w-xl">
           <div className="mb-5">
-            <img src={logo} className="w-20" alt="Logo" />
+            <img src={logo} className="w-40" alt="Logo" />
           </div>
-          <h2 className="text-3xl font-bold mb-4">Sign in to your account</h2>
-          <p className="text-sm text-gray-400 mb-6">
-            {otpRequested
-              ? "Enter the OTP sent to your email to complete login."
-              : "Enter your credentials to receive an OTP."}
+          <h2 className="text-3xl font-bold mb-4 text-gray-800">Sign in to your account</h2>
+          <p className="text-sm text-gray-600 mb-6">
+            Enter your credentials to receive an OTP for verification.
           </p>
 
           {/* Demo Mode Option */}
-          <div className="mb-6 p-4 bg-gradient-to-r from-green-500/10 to-blue-500/10 border-2 border-green-500/30 rounded-xl">
+          <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-500/30 rounded-xl">
             <label className="flex items-start gap-3 cursor-pointer group">
               <input
                 type="checkbox"
                 checked={demoMode}
                 onChange={(e) => setDemoMode(e.target.checked)}
-                className="w-5 h-5 mt-0.5 accent-green-500 cursor-pointer"
+                className="w-5 h-5 mt-0.5 accent-blue-600 cursor-pointer"
               />
               <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <span className="text-lg">🚀</span>
-                  <p className="text-green-400 font-bold text-sm">Demo Mode Login</p>
+                  <p className="text-blue-600 font-bold text-sm">Demo Mode Login</p>
                 </div>
-                <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                <p className="text-xs text-gray-600 mt-1 leading-relaxed">
                   Enable this to login without server connection. Perfect for UI/UX testing.
                   No API calls will be made and dummy data will be displayed.
                 </p>
@@ -239,10 +184,10 @@ const LoginPage = () => {
                 autoComplete="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-md bg-secondary/10 border ${errors.email ? "border-red-500" : "border-white/10"
-                  } focus:outline-none focus:ring-2 ${errors.email ? "focus:ring-red-500" : "focus:ring-primary"
+                className={`w-full px-4 py-3 rounded-md bg-gray-50 text-gray-800 border ${errors.email ? "border-red-500" : "border-gray-300"
+                  } focus:outline-none focus:ring-2 ${errors.email ? "focus:ring-red-500" : "focus:ring-blue-700"
                   }`}
-                disabled={isLoading || otpRequested}
+                disabled={isLoading}
                 autoFocus
                 aria-label="Email input"
               />
@@ -260,17 +205,17 @@ const LoginPage = () => {
                 autoComplete="current-password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-md bg-secondary/10 border ${errors.password ? "border-red-500" : "border-white/10"
-                  } focus:outline-none focus:ring-2 ${errors.password ? "focus:ring-red-500" : "focus:ring-primary"
+                className={`w-full px-4 py-3 rounded-md bg-gray-50 text-gray-800 border ${errors.password ? "border-red-500" : "border-gray-300"
+                  } focus:outline-none focus:ring-2 ${errors.password ? "focus:ring-red-500" : "focus:ring-blue-700"
                   }`}
-                disabled={isLoading || otpRequested}
+                disabled={isLoading}
                 aria-label="Password input"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                disabled={isLoading || otpRequested}
-                className={`absolute right-3 top-4 mix-blend-difference text-white text-lg hover:text-gray-300 transition-colors ${isLoading || otpRequested ? "opacity-50 cursor-not-allowed" : ""
+                disabled={isLoading}
+                className={`absolute right-3 top-4 text-gray-600 text-lg hover:text-gray-800 transition-colors ${isLoading ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
@@ -282,35 +227,14 @@ const LoginPage = () => {
                 </p>
               )}
             </div>
-            {otpRequested && (
-              <div>
-                <input
-                  type="text"
-                  name="otp"
-                  placeholder="Enter 6-digit OTP"
-                  value={formData.otp}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-md bg-secondary/10 border ${errors.otp ? "border-red-500" : "border-white/10"
-                    } focus:outline-none focus:ring-2 ${errors.otp ? "focus:ring-red-500" : "focus:ring-primary"
-                    }`}
-                  disabled={isLoading}
-                  aria-label="OTP input"
-                />
-                {errors.otp && (
-                  <p className="text-red-500 text-sm mt-1" role="alert">
-                    {errors.otp}
-                  </p>
-                )}
-              </div>
-            )}
-            <div className="flex items-center justify-between text-sm text-gray-300">
+            <div className="flex items-center justify-between text-sm text-gray-700">
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   name="remember"
                   checked={formData.remember}
                   onChange={handleChange}
-                  className="accent-primary"
+                  className="accent-blue-ring-blue-700"
                   disabled={isLoading}
                   aria-label="Remember me checkbox"
                 />
@@ -318,7 +242,7 @@ const LoginPage = () => {
               </label>
               <Link
                 to="/user/forgot-password"
-                className="text-secondary hover:underline"
+                className="text-blue-600 hover:underline"
                 aria-label="Forgot password link"
               >
                 Forgot password?
@@ -326,10 +250,10 @@ const LoginPage = () => {
             </div>
             <button
               type="submit"
-              className={`w-full py-3 rounded-md bg-gradient-to-br from-[#2298d341] to-[#05CE99] hover:opacity-90 transition-colors font-semibold ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+              className={`w-full py-3 rounded-md bg-gradient-to-br from-blue-500 to-blue-700 text-white hover:opacity-90 transition-colors font-semibold ${isLoading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               disabled={isLoading}
-              aria-label={otpRequested ? "Sign in button" : "Request OTP button"}
+              aria-label="Login button"
             >
               {isLoading ? (
                 <svg
@@ -350,38 +274,24 @@ const LoginPage = () => {
                     d="M4 12a8 8 0 018-8v8H4z"
                   />
                 </svg>
-              ) : otpRequested ? (
-                "Sign In"
               ) : (
-                "Request OTP"
+                "Login"
               )}
             </button>
-            {otpRequested && (
-              <button
-                type="button"
-                onClick={handleRequestOTP}
-                className={`w-full py-3 mt-2 rounded-md bg-gray-600 hover:bg-gray-700 transition-colors font-semibold text-white ${isLoading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                disabled={isLoading}
-                aria-label="Resend OTP button"
-              >
-                Resend OTP
-              </button>
-            )}
           </form>
           <div className="my-6 flex items-center gap-4">
-            <hr className="flex-1 border-gray-600" />
-            <span className="text-gray-400 text-sm">
+            <hr className="flex-1 border-gray-300" />
+            <span className="text-gray-600 text-sm">
               Want to create an account?{" "}
               <Link
                 to="/user/signup"
-                className="text-secondary text-nowrap underline-offset-4 hover:underline"
+                className="text-blue-600 text-nowrap underline-offset-4 hover:underline"
                 aria-label="Sign up link"
               >
                 Sign Up
               </Link>
             </span>
-            <hr className="flex-1 border-gray-600" />
+            <hr className="flex-1 border-gray-300" />
           </div>
         </div>
       </div>

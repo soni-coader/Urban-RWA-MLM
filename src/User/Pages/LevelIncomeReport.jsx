@@ -16,6 +16,8 @@ import { appConfig } from '../../config/appConfig';
 import moment from 'moment';
 import SkeletonLoader from '../Components/Comman/Skeletons';
 import { useQuery } from '@tanstack/react-query';
+import { useDemoMode } from '../Contexts/DemoModeContext';
+import { getDemoData } from '../Data/demoData';
 
 const columnHelper = createColumnHelper();
 
@@ -107,6 +109,7 @@ const fetchLevelIncomeRewards = async () => {
 };
 
 const LevelIncomeReport = () => {
+  const { isDemoMode } = useDemoMode();
   const [globalFilter, setGlobalFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
@@ -117,10 +120,14 @@ const LevelIncomeReport = () => {
     staleTime: 1000 * 60 * 2,
     cacheTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
+    enabled: !isDemoMode,
   });
 
+  // Use demo data if demo mode is active
+  const displayData = isDemoMode ? getDemoData("levelIncomeReport") : data;
+
   const filteredData = useMemo(() => {
-    let result = data?.data || [];
+    let result = displayData?.data || displayData?.records || [];
     if (statusFilter) {
       result = result.filter(
         (row) => String(row.status).toLowerCase() === String(statusFilter).toLowerCase()
@@ -135,7 +142,7 @@ const LevelIncomeReport = () => {
       );
     }
     return result;
-  }, [data, statusFilter, globalFilter]);
+  }, [displayData, statusFilter, globalFilter]);
 
   const table = useReactTable({
     data: filteredData,
@@ -174,7 +181,7 @@ const LevelIncomeReport = () => {
   return (
     <div className="theme-card-style border-gradient text-gray-800 p-6 rounded-md max-w-full mx-auto">
       <div className="flex justify-between mb-6 gap-4 flex-wrap-reverse">
-        <h2 className="text-2xl text-primary font-bold">Level Income Report</h2>
+        <h2 className="text-2xl text-blue-700 font-bold">Level Income Report</h2>
         <button
           onClick={exportToExcel}
           disabled={isLoading || filteredData.length === 0}
@@ -189,11 +196,11 @@ const LevelIncomeReport = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div className="rounded-2xl p-4 bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-200 shadow">
           <div className="text-sm text-gray-600">Self Investment</div>
-          <div className="text-2xl font-semibold mt-1">${data?.selfInvestment || 0}</div>
+          <div className="text-2xl font-semibold mt-1">${displayData?.selfInvestment || 0}</div>
         </div>
         <div className="rounded-2xl p-4 bg-gradient-to-br from-gray-100 to-gray-50 border border-gray-200 shadow">
           <div className="text-sm text-gray-600">Team Investment</div>
-          <div className="text-2xl font-semibold mt-1">${data?.teamInvestment || 0}</div>
+          <div className="text-2xl font-semibold mt-1">${displayData?.teamInvestment || 0}</div>
         </div>
       </div>
 
@@ -232,7 +239,7 @@ const LevelIncomeReport = () => {
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
-                        className="text-left px-4 py-2 border-b border-gray-200 text-primary text-nowrap"
+                        className="text-left px-4 py-2 border-b border-gray-200 text-blue-700 text-nowrap"
                       >
                         {flexRender(header.column.columnDef.header, header.getContext())}
                       </th>

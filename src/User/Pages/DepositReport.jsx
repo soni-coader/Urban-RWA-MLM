@@ -41,7 +41,7 @@ const columns = [
       const copyToClipboard = () => {
         navigator.clipboard.writeText(fullHash);
         toast.success('Transaction hash copied to clipboard!', {
-          icon: <FaCopy className="text-primary" />,
+          icon: <FaCopy className="text-blue-700" />,
           autoClose: 2000,
         });
       };
@@ -186,7 +186,7 @@ const DepositReport = () => {
   return (
     <div className="theme-card-style border-gradient text-gray-800 p-6 rounded-md max-w-full mx-auto">
       <div className="flex justify-between mb-6 gap-4 flex-wrap-reverse">
-        <h2 className="text-2xl text-primary font-bold">Deposit Report</h2>
+        <h2 className="text-2xl text-blue-700 font-bold">Deposit Report</h2>
         <button
           onClick={exportToExcel}
           className="px-3 py-1 h-fit text-base border flex items-center justify-center gap-2 border-gray-300 rounded bg-white hover:bg-gray-50 transition"
@@ -236,7 +236,7 @@ const DepositReport = () => {
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
-                        className="text-left px-4 py-2 border-b border-gray-200 text-primary text-nowrap"
+                        className="text-left px-4 py-2 border-b border-gray-200 text-blue-700 text-nowrap"
                       >
                         {flexRender(
                           header.column.columnDef.header,

@@ -154,7 +154,7 @@ const Swap = () => {
                     <div className="relative">
                         <label className="block text-slate-400 text-sm mb-1">USDT Amount</label>
                         <div className="flex items-center bg-transparent border border-white/10 rounded-md gap-3 px-3 py-1 ">
-                            <div className={`   aspect-[1/1]  glow-text bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center`}>
+                            <div className={`   aspect-[1/1]  glow-text bg-gradient-to-br from-blue-700 to-secondary rounded-full flex items-center justify-center`}>
 
                                 <SiTether className=" m-2     " />
                             </div>
@@ -174,7 +174,7 @@ const Swap = () => {
                     <div className="relative">
                         <label className="block text-slate-400 text-sm mb-1">You’ll Receive (EMGT)</label>
                         <div className="flex items-center bg-transparent border border-white/10 rounded-md gap-3 py-1 px-3">
-                            <div className={`   aspect-[1/1]  glow-text bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center`}>
+                            <div className={`   aspect-[1/1]  glow-text bg-gradient-to-br from-blue-700 to-secondary rounded-full flex items-center justify-center`}>
 
                                 <img src={favlogo} className='w-9' alt="favlogo" />
                             </div>

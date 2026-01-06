@@ -6,8 +6,11 @@ import { TbWallet } from "react-icons/tb";
 import { FaWallet, FaCopy } from "react-icons/fa";
 import axios from "axios";
 import { appConfig } from "../../config/appConfig";
+import { useDemoMode } from "../Contexts/DemoModeContext";
+import { getDemoData } from "../Data/demoData";
 
 const Withdrawals = () => {
+  const { isDemoMode } = useDemoMode();
   const [walletType, setWalletType] = useState("my");
   const [amount, setAmount] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
@@ -25,6 +28,14 @@ const Withdrawals = () => {
   const [withdrawalDetails, setWithdrawalDetails] = useState(null);
 
   const fetchBalance = async () => {
+    // If in demo mode, use demo data
+    if (isDemoMode) {
+      const demoWithdrawalData = getDemoData("withdrawalBalance");
+      setBalance(demoWithdrawalData.balance);
+      setWalletAddress(demoWithdrawalData.walletAddress);
+      return;
+    }
+
     try {
       const token =
         localStorage.getItem("authToken") ||
@@ -56,7 +67,7 @@ const Withdrawals = () => {
 
   useEffect(() => {
     fetchBalance();
-  }, []);
+  }, [isDemoMode]);
 
   const handleCopyAddress = () => {
     if (walletAddress === "N/A") {
@@ -86,6 +97,13 @@ const Withdrawals = () => {
     }
     if (walletAddress === "N/A") {
       toast.error("Please set a valid wallet address before withdrawing");
+      return;
+    }
+
+    // If in demo mode, show OTP input directly
+    if (isDemoMode) {
+      setShowOtpInput(true);
+      toast.info("Demo OTP: 123456 (Demo Mode)");
       return;
     }
 
@@ -163,6 +181,15 @@ const Withdrawals = () => {
       return;
     }
 
+    // If in demo mode, show success message
+    if (isDemoMode) {
+      toast.success("Withdrawal request submitted successfully! (Demo Mode)");
+      setAmount("");
+      setOtp("");
+      setShowOtpInput(false);
+      return;
+    }
+
     setLoading(true);
     try {
       const token =
@@ -219,34 +246,34 @@ const Withdrawals = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto theme-card-style border-gradient p-6 rounded-xl text-gray-800 shadow-lg space-y-6">
-      <h2 className="text-2xl font-bold text-center">Withdraw Funds</h2>
+    <div className="max-w-xl mx-auto bg-white border border-gray-200 p-6 rounded-xl text-gray-800 shadow-lg space-y-6">
+      <h2 className="text-2xl font-bold text-center text-gray-800">Withdraw Funds</h2>
 
       {/* Wallet Selector */}
       <div>
-        <label className="block text-slate-400 text-sm mb-1">
+        <label className="block text-gray-600 text-sm mb-1">
           Select Wallet
         </label>
-        <div className="flex items-center bg-transparent border border-white/10 rounded-md gap-3 px-3 py-1">
-          <div className="aspect-[1/1] glow-text bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+        <div className="flex items-center bg-gray-50 border border-gray-200 rounded-md gap-3 px-3 py-1">
+          <div className="aspect-[1/1] bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white">
             <TbWallet className="m-2" />
           </div>
           <select
             value={walletType}
             onChange={(e) => setWalletType(e.target.value)}
-            className="w-full py-2 bg-transparent text-white focus:outline-none"
+            className="w-full py-2 bg-transparent text-gray-800 focus:outline-none"
             disabled={loading}
           >
-            <option value="my" className="bg-gray-800">
+            <option value="my" className="bg-white">
               My Wallet
             </option>
-            <option value="principal" className="bg-gray-800">
+            <option value="principal" className="bg-white">
               Principal Wallet
             </option>
-            <option value="deposit" className="bg-gray-800">
+            <option value="deposit" className="bg-white">
               Deposit Wallet
             </option>
-            <option value="referral" className="bg-gray-800">
+            <option value="referral" className="bg-white">
               Referral Wallet
             </option>
           </select>
@@ -254,25 +281,25 @@ const Withdrawals = () => {
       </div>
 
       {/* Balance Info */}
-      <div className="flex items-center justify-between bg-transparent border border-white/10 px-4 py-3 rounded-md text-slate-300 text-sm">
+      <div className="flex items-center justify-between bg-gray-50 border border-gray-200 px-4 py-3 rounded-md text-gray-600 text-sm">
         <div className="flex items-center gap-2">
-          <MdOutlineAccountBalanceWallet className="text-green-400 text-xl" />
+          <MdOutlineAccountBalanceWallet className="text-green-500 text-xl" />
           Available Balance in {getWalletLabel(walletType)}:
         </div>
-        <span className="text-white font-semibold">${balance[walletType]}</span>
+        <span className="text-gray-800 font-semibold">${balance[walletType]}</span>
       </div>
 
       {/* Wallet Address */}
-      <div className="bg-transparent border border-white/10 px-4 py-3 rounded-md text-slate-300 text-sm">
+      <div className="bg-gray-50 border border-gray-200 px-4 py-3 rounded-md text-gray-600 text-sm">
         <div className="flex items-center gap-2">
-          <FaWallet className="text-blue-400 text-xl" />
+          <FaWallet className="text-blue-500 text-xl" />
           <span>Wallet Address:</span>
         </div>
         <div className="flex items-center gap-2 mt-2">
-          <span className="text-white font-semibold break-all">{walletAddress}</span>
+          <span className="text-gray-800 font-semibold break-all">{walletAddress}</span>
           <button
             onClick={handleCopyAddress}
-            className="p-1 text-blue-400 hover:text-blue-300 transition"
+            className="p-1 text-blue-500 hover:text-blue-600 transition"
             title="Copy wallet address"
             disabled={loading}
           >
@@ -280,7 +307,7 @@ const Withdrawals = () => {
           </button>
         </div>
       </div>
-      <div className="text-sm text-yellow-300 bg-yellow-900/20 border border-yellow-500/30 rounded-md p-3">
+      <div className="text-sm text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-md p-3">
         <span className="font-semibold">Note:</span> Please
         ensure your wallet address is correct, as it will not be verified by our
         system prior to processing the withdrawal.
@@ -288,11 +315,11 @@ const Withdrawals = () => {
 
       {/* Amount and OTP Inputs */}
       <div>
-        <label className="block text-slate-400 text-sm mb-1">
+        <label className="block text-gray-600 text-sm mb-1">
           Enter Amount
         </label>
-        <div className="flex items-center bg-transparent border border-white/10 rounded-md gap-3 px-3 py-1">
-          <div className="aspect-[1/1] glow-text bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+        <div className="flex items-center bg-gray-50 border border-gray-200 rounded-md gap-3 px-3 py-1">
+          <div className="aspect-[1/1] bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white">
             <FiDollarSign className="m-2" />
           </div>
           <input
@@ -300,18 +327,18 @@ const Withdrawals = () => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount"
-            className="w-full py-2 bg-transparent text-white focus:outline-none"
+            className="w-full py-2 bg-transparent text-gray-800 focus:outline-none"
             disabled={loading}
           />
         </div>
 
         {showOtpInput && (
           <div className="mt-4">
-            <label className="block text-slate-400 text-sm mb-1">
+            <label className="block text-gray-600 text-sm mb-1">
               Enter OTP
             </label>
-            <div className="flex items-center bg-transparent border border-white/10 rounded-md gap-3 px-3 py-1">
-              <div className="aspect-[1/1] glow-text bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+            <div className="flex items-center bg-gray-50 border border-gray-200 rounded-md gap-3 px-3 py-1">
+              <div className="aspect-[1/1] bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white">
                 <FiDollarSign className="m-2" />
               </div>
               <input
@@ -319,23 +346,23 @@ const Withdrawals = () => {
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
                 placeholder="Enter 6-digit OTP"
-                className="w-full py-2 bg-transparent text-white focus:outline-none"
+                className="w-full py-2 bg-transparent text-gray-800 focus:outline-none"
                 disabled={loading}
               />
             </div>
           </div>
         )}
 
-        <div className="text-sm mt-5 text-yellow-300 bg-yellow-900/20 border border-yellow-500/30 rounded-md p-3">
+        <div className="text-sm mt-5 text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-md p-3">
           <span className="font-semibold">Note:</span> The minimum withdrawal
-          amount is <span className="font-bold text-yellow-200">$5</span>.
+          amount is <span className="font-bold text-yellow-800">$5</span>.
         </div>
       </div>
 
       {/* Action Button */}
       <button
         onClick={showOtpInput ? handleOtpSubmit : handleWithdraw}
-        className="w-full py-2 rounded-md font-semibold text-white bg-gradient-to-r from-[#2298d341] to-[#05CE99] hover:opacity-90 transition"
+        className="w-full py-2 rounded-md font-semibold text-white bg-gradient-to-r from-blue-500 to-green-500 hover:opacity-90 transition"
         disabled={loading}
       >
         {loading ? "Processing..." : showOtpInput ? "Submit OTP" : "Withdraw"}
@@ -343,8 +370,8 @@ const Withdrawals = () => {
 
       {/* Withdrawal Confirmation */}
       {withdrawalDetails && (
-        <div className="bg-transparent border border-white/10 px-4 py-3 rounded-md text-slate-300 text-sm">
-          <h3 className="text-lg font-bold text-white mb-2">Withdrawal Details</h3>
+        <div className="bg-gray-50 border border-gray-200 px-4 py-3 rounded-md text-gray-600 text-sm">
+          <h3 className="text-lg font-bold text-gray-800 mb-2">Withdrawal Details</h3>
           <p>
             <strong>Status:</strong>{" "}
             {withdrawalDetails.status === "completed"
@@ -369,7 +396,7 @@ const Withdrawals = () => {
                 href={`https://bscscan.com/tx/${withdrawalDetails.txHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-400 hover:underline break-all"
+                className="text-blue-500 hover:underline break-all"
               >
                 {withdrawalDetails.txHash}
               </a>

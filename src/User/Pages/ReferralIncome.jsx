@@ -8,8 +8,11 @@ import i2 from "../../assets/userImages/images/lavel2.webp";
 import i3 from "../../assets/userImages/images/lavel3.webp";
 import { appConfig } from "../../config/appConfig";
 import SkeletonLoader from "../Components/Comman/Skeletons";
+import { useDemoMode } from '../Contexts/DemoModeContext';
+import { getDemoData } from '../Data/demoData';
 
 const ReferralIncome = () => {
+  const { isDemoMode } = useDemoMode();
   const navigate = useNavigate();
 
   // Default referral data to prevent undefined errors
@@ -83,6 +86,7 @@ const ReferralIncome = () => {
     },
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
+    enabled: !isDemoMode,
     onError: (err) => {
       if (err.message.includes("Invalid token")) {
         navigate("/user/login");
@@ -90,9 +94,31 @@ const ReferralIncome = () => {
     },
   });
 
+  // Use demo data if demo mode is active
+  const displayData = isDemoMode ? [
+    {
+      level: "Level 1",
+      percentage: getDemoData("referralIncome")["1"].percentage,
+      users: getDemoData("referralIncome")["1"].users,
+      income: getDemoData("referralIncome")["1"].income,
+    },
+    {
+      level: "Level 2",
+      percentage: getDemoData("referralIncome")["2"].percentage,
+      users: getDemoData("referralIncome")["2"].users,
+      income: getDemoData("referralIncome")["2"].income,
+    },
+    {
+      level: "Level 3",
+      percentage: getDemoData("referralIncome")["3"].percentage,
+      users: getDemoData("referralIncome")["3"].users,
+      income: getDemoData("referralIncome")["3"].income,
+    },
+  ] : referralData;
+
   // Calculate totals
-  const totalUsers = referralData.reduce((sum, r) => sum + (r.users || 0), 0);
-  const totalIncome = referralData.reduce((sum, r) => sum + (r.income || 0), 0);
+  const totalUsers = displayData.reduce((sum, r) => sum + (r.users || 0), 0);
+  const totalIncome = displayData.reduce((sum, r) => sum + (r.income || 0), 0);
 
   // Loading or Error State
   // if (isLoading) {
@@ -127,7 +153,7 @@ const ReferralIncome = () => {
             <><SkeletonLoader variant="card3" rows={1} /></>
             :
             <>
-              {referralData[0] && (
+              {displayData[0] && (
                 <div className="bg-gradient-to-br from-green-400/10 to-green-700/10 border border-green-500/30 border-gradient px-6 py-4 rounded-lg w-full max-w-md shadow-lg flex sm:flex-row flex-col-reverse sm:text-left text-center gap-5 transition-transform hover:scale-105">
                   <div className="sm:w-1/2 w-full">
                     <h3
@@ -138,15 +164,15 @@ const ReferralIncome = () => {
                       Level 1
                     </h3>
                     <p className="text-sm md:text-base text-gray-600">
-                      {referralData[0].percentage}% Commission
+                      {displayData[0].percentage}% Commission
                     </p>
                     <p className="text-sm md:text-base text-gray-600">
-                      Users Referred: <span className="font-bold text-gray-800">{referralData[0].users}</span>
+                      Users Referred: <span className="font-bold text-gray-800">{displayData[0].users}</span>
                     </p>
                     <p className="text-sm md:text-base text-gray-600">
                       Income Earned:{" "}
                       <span className="text-green-600 font-semibold">
-                        ${referralData[0].income.toLocaleString()}
+                        ${displayData[0].income.toLocaleString()}
                       </span>
                     </p>
                   </div>
@@ -170,7 +196,7 @@ const ReferralIncome = () => {
             <><SkeletonLoader variant="card3" rows={1} /></>
             :
             <>
-              {referralData[1] && (
+              {displayData[1] && (
                 <div className="bg-gradient-to-br from-blue-400/10 to-blue-700/10 border border-green-500/30 border-gradient px-6 py-4 rounded-lg w-full max-w-md shadow-lg flex sm:flex-row flex-col-reverse sm:text-left text-center gap-5 transition-transform hover:scale-105">
                   <div className="sm:w-1/2 w-full">
                     <h3
@@ -181,15 +207,15 @@ const ReferralIncome = () => {
                       Level 2
                     </h3>
                     <p className="text-sm md:text-base text-gray-600">
-                      {referralData[1].percentage}% Commission
+                      {displayData[1].percentage}% Commission
                     </p>
                     <p className="text-sm md:text-base text-gray-600">
-                      Users Referred: <span className="font-bold text-gray-800">{referralData[1].users}</span>
+                      Users Referred: <span className="font-bold text-gray-800">{displayData[1].users}</span>
                     </p>
                     <p className="text-sm md:text-base text-gray-600">
                       Income Earned:{" "}
                       <span className="text-green-600 font-semibold">
-                        ${referralData[1].income.toLocaleString()}
+                        ${displayData[1].income.toLocaleString()}
                       </span>
                     </p>
                   </div>
@@ -212,7 +238,7 @@ const ReferralIncome = () => {
             <><SkeletonLoader variant="card3" rows={1} /></>
             :
             <>
-              {referralData[2] && (
+              {displayData[2] && (
                 <div className="bg-gradient-to-br from-purple-400/10 to-purple-700/10 border border-green-500/30 border-gradient px-6 py-4 rounded-lg w-full max-w-md shadow-lg flex sm:flex-row flex-col-reverse sm:text-left text-center gap-5 transition-transform hover:scale-105">
                   <div className="sm:w-1/2 w-full">
                     <h3
@@ -223,15 +249,15 @@ const ReferralIncome = () => {
                       Level 3
                     </h3>
                     <p className="text-sm md:text-base text-gray-600">
-                      {referralData[2].percentage}% Commission
+                      {displayData[2].percentage}% Commission
                     </p>
                     <p className="text-sm md:text-base text-gray-600">
-                      Users Referred: <span className="font-bold text-gray-800">{referralData[2].users}</span>
+                      Users Referred: <span className="font-bold text-gray-800">{displayData[2].users}</span>
                     </p>
                     <p className="text-sm md:text-base text-gray-600">
                       Income Earned:{" "}
                       <span className="text-green-600 font-semibold">
-                        ${referralData[2].income.toLocaleString()}
+                        ${displayData[2].income.toLocaleString()}
                       </span>
                     </p>
                   </div>

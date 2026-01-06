@@ -71,7 +71,7 @@ const Profits = () => {
     <div className="text-gray-800 p-0 overflow-x-hidden">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl uppercase text-primary font-bold mb-2">Profit & Earnings Dashboard</h1>
+        <h1 className="text-3xl uppercase text-blue-700 font-bold mb-2">Profit & Earnings Dashboard</h1>
         <p className="text-gray-600 mb-6">Track your profit withdrawals and view your earnings history</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {stats.map((item, idx) => (
@@ -91,7 +91,7 @@ const Profits = () => {
 
       {/* Profit Withdrawal History Table */}
       <div className="theme-card-style border-gradient p-8 border border-gray-200 mb-8 rounded-xl">
-        <h3 className="text-lg font-semibold text-primary mb-4">Profit Withdrawal History</h3>
+        <h3 className="text-lg font-semibold text-blue-700 mb-4">Profit Withdrawal History</h3>
         {loading ? (
           <div>Loading profit withdrawal history...</div>
         ) : error ? (

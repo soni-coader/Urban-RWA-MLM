@@ -14,6 +14,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { appConfig } from "../../config/appConfig";
 import SkeletonLoader from "../Components/Comman/Skeletons";
+import { useDemoMode } from "../Contexts/DemoModeContext";
+import { getDemoData } from "../Data/demoData";
 
 // Define icons and gradients for dynamic assignment
 const planStyles = [
@@ -55,6 +57,7 @@ const fetchLevelPlans = async ({ queryKey }) => {
 };
 
 const LavelRewards = () => {
+  const { isDemoMode } = useDemoMode();
   const [page, setPage] = useState(1);
   const [limit] = useState(6);
 
@@ -66,16 +69,31 @@ const LavelRewards = () => {
   } = useQuery({
     queryKey: ["levelPlans", page, limit],
     queryFn: fetchLevelPlans,
+    enabled: !isDemoMode,
     staleTime: 1000 * 60 * 2, // 2 min
     cacheTime: 1000 * 60 * 5, // 5 min
     refetchOnWindowFocus: false,
     keepPreviousData: true,
   });
 
-  if (isLoading) {
+  // Use demo data if in demo mode
+  const demoLevelData = isDemoMode ? getDemoData("levelRewards") : null;
+  const displayData = isDemoMode
+    ? {
+      plans: demoLevelData.plans.map((plan, index) => ({
+        ...plan,
+        icon: planStyles[index % planStyles.length].icon,
+        gradient: planStyles[index % planStyles.length].gradient,
+        description: planStyles[index % planStyles.length].description,
+      })),
+      totalPages: Math.ceil(demoLevelData.totalCount / limit),
+    }
+    : data;
+
+  if (isLoading && !isDemoMode) {
     return (
       <div className="text-white text-center">
-        <h2 className="text-xl md:text-2xl font-bold text-center mb-6 text-primary">
+        <h2 className="text-xl md:text-2xl font-bold text-center mb-6 text-blue-700">
           Level Rewards
         </h2>
         <SkeletonLoader variant="card2" rows={6} />
@@ -83,7 +101,7 @@ const LavelRewards = () => {
     );
   }
 
-  if (isError) {
+  if (isError && !isDemoMode) {
     return (
       <div className="theme-card-style border-gradient text-red-500 p-6 rounded-md max-w-full mx-auto text-center text-sm">
         {error.message || "Failed to fetch Level Plans"}
@@ -91,7 +109,7 @@ const LavelRewards = () => {
     );
   }
 
-  if (!data || data.plans.length === 0) {
+  if (!displayData || displayData.plans.length === 0) {
     return (
       <div className="theme-card-style border-gradient text-gray-800 p-6 rounded-md max-w-full mx-auto text-center text-sm text-gray-500">
         No Level Plans available
@@ -101,12 +119,12 @@ const LavelRewards = () => {
 
   return (
     <div className="text-gray-800 p-6 rounded-md max-w-full mx-auto">
-      <h2 className="text-xl md:text-2xl font-bold text-center mb-6 text-primary">
+      <h2 className="text-xl md:text-2xl font-bold text-center mb-6 text-blue-700">
         Level Rewards
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.plans.map((plan) => (
+        {displayData.plans.map((plan) => (
           <div
             key={plan._id}
             className="rounded-xl border border-gradient theme-card-style p-6 text-center shadow-md transition-all hover:scale-[1.02] hover:shadow-lg duration-300"
@@ -144,10 +162,10 @@ const LavelRewards = () => {
           {"<"}
         </button>
         <span className="text-gray-800">
-          Page {page} of {data.totalPages}
+          Page {page} of {displayData.totalPages}
         </span>
         <button
-          disabled={page === data.totalPages}
+          disabled={page === displayData.totalPages}
           onClick={() => setPage((prev) => prev + 1)}
           className="px-4 py-2 rounded-lg bg-transparent border-gradient text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
         >

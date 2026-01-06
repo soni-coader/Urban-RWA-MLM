@@ -16,6 +16,8 @@ import moment from "moment";
 import { appConfig } from "../../config/appConfig";
 import SkeletonLoader from "../Components/Comman/Skeletons";
 import { useQuery } from "@tanstack/react-query";
+import { useDemoMode } from "../Contexts/DemoModeContext";
+import { getDemoData } from "../Data/demoData";
 
 const columnHelper = createColumnHelper();
 
@@ -55,7 +57,7 @@ const columns = [
     cell: (info) => (
       <span
         className={`px-2 py-1 rounded text-xs font-semibold ${info.getValue() === "Completed"
-          ? "bg-green-800 text-green-300"
+          ? "bg-green-500 text-black"
           : "bg-yellow-800 text-yellow-300"
           }`}
       >
@@ -93,6 +95,7 @@ const fetchSwaps = async () => {
 const SwapReport = () => {
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+  const { isDemoMode } = useDemoMode();
 
   const {
     data: swaps = [],
@@ -105,10 +108,14 @@ const SwapReport = () => {
     staleTime: 1000 * 60 * 2, // 2 minutes
     cacheTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: false,
+    enabled: !isDemoMode, // Disable API call in demo mode
   });
 
+  // Use demo data if demo mode is active, otherwise use API data
+  const displayData = isDemoMode ? getDemoData("swapReport") : swaps;
+
   const table = useReactTable({
-    data: swaps,
+    data: displayData,
     columns: useMemo(() => columns, []),
     state: { globalFilter, pagination },
     onGlobalFilterChange: setGlobalFilter,
@@ -143,15 +150,15 @@ const SwapReport = () => {
   return (
     <div className="theme-card-style border-gradient text-gray-800 p-6 rounded-md max-w-full mx-auto">
       <div className="flex justify-between mb-6 gap-4 flex-wrap-reverse">
-        <h2 className="text-xl md:text-2xl text-primary font-bold">Swap Report</h2>
+        <h2 className="text-xl md:text-2xl text-blue-700 font-bold">Swap Report</h2>
         <button
           onClick={exportToExcel}
-          disabled={swaps.length === 0 || isLoading}
-          className="px-3 py-1 h-fit text-base border flex items-center justify-center gap-2 border-slate-600 rounded bg-slate-800 hover:bg-slate-700 transition disabled:opacity-40"
+          disabled={displayData.length === 0 || isLoading}
+          className="px-3 py-1 h-fit text-base border flex items-center justify-center gap-2 border-gray-300 rounded bg-white hover:bg-gray-50 transition disabled:opacity-40 disabled:cursor-not-allowed"
           aria-label="Export to Excel"
         >
           <PiMicrosoftExcelLogo className="text-green-600" />
-          <span>Export to Excel</span>
+          <span>Export</span>
         </button>
       </div>
 
@@ -162,8 +169,8 @@ const SwapReport = () => {
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
           placeholder="Search swaps by date or status..."
-          className="w-full px-4 py-2 bg-transparent border border-slate-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-40"
-          disabled={isLoading || swaps.length === 0}
+          className="w-full px-4 py-2 bg-white border border-gray-300 rounded text-gray-800 focus:outline-none focus:border-indigo-500"
+          disabled={isLoading || displayData.length === 0}
           aria-label="Search swaps by date or status"
         />
       </div>
@@ -184,13 +191,13 @@ const SwapReport = () => {
       {!isLoading && !isError && (
         <div className="overflow-auto rounded">
           <table className="w-full border-collapse text-sm">
-            <thead className="bg-sky-950/40">
+            <thead className="bg-gray-50">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
-                      className="text-left px-4 py-2 border-b border-slate-700 text-primary font-semibold text-nowrap"
+                      className="text-left px-4 py-2 border-b border-gray-200 text-blue-700 font-semibold text-nowrap"
                     >
                       {flexRender(header.column.columnDef.header, header.getContext())}
                     </th>
@@ -199,23 +206,23 @@ const SwapReport = () => {
               ))}
             </thead>
             <tbody>
-              {swaps.length === 0 ? (
+              {displayData.length === 0 ? (
                 <tr>
-                  <td colSpan={columns.length} className="text-center text-sm text-slate-400 py-4">
+                  <td colSpan={columns.length} className="text-center text-sm text-gray-500 py-4">
                     No records available
                   </td>
                 </tr>
               ) : table.getRowModel().rows.length === 0 ? (
                 <tr>
-                  <td colSpan={columns.length} className="text-center text-sm text-slate-400 py-4">
+                  <td colSpan={columns.length} className="text-center text-sm text-gray-500 py-4">
                     No data found
                   </td>
                 </tr>
               ) : (
                 table.getRowModel().rows.map((row) => (
-                  <tr key={row.id} className="hover:bg-slate-800/40 transition text-nowrap">
+                  <tr key={row.id} className="hover:bg-gray-50 transition text-nowrap">
                     {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="px-4 py-2 border-b border-slate-700">
+                      <td key={cell.id} className="px-4 py-2 border-b border-gray-200">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>
                     ))}
@@ -228,16 +235,16 @@ const SwapReport = () => {
       )}
 
       {/* Pagination */}
-      {!isLoading && !isError && swaps.length > 0 && (
+      {!isLoading && !isError && displayData.length > 0 && (
         <div className="mt-6 flex md:flex-row flex-col gap-4 items-center justify-between text-sm">
-          <div className="text-secondary">
+          <div className="text-gray-600">
             Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount() || 1}
           </div>
           <div className="space-x-2 flex">
             <button
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
-              className="px-3 py-1 border text-xs rounded disabled:opacity-40 hover:bg-slate-700 transition"
+              className="px-3 py-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 md:text-sm text-xs rounded disabled:opacity-40 disabled:cursor-not-allowed"
               aria-label="Go to first page"
             >
               First
@@ -245,7 +252,7 @@ const SwapReport = () => {
             <button
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              className="px-3 py-1 border text-xs rounded disabled:opacity-40 hover:bg-slate-700 transition"
+              className="px-3 py-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 md:text-sm text-xs rounded disabled:opacity-40 disabled:cursor-not-allowed"
               aria-label="Previous page"
             >
               <FaAngleLeft />
@@ -253,7 +260,7 @@ const SwapReport = () => {
             <button
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              className="px-3 py-1 border text-xs rounded disabled:opacity-40 hover:bg-slate-700 transition"
+              className="px-3 py-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 md:text-sm text-xs rounded disabled:opacity-40 disabled:cursor-not-allowed"
               aria-label="Next page"
             >
               <FaAngleRight />
@@ -261,7 +268,7 @@ const SwapReport = () => {
             <button
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
-              className="px-3 py-1 border text-xs rounded disabled:opacity-40 hover:bg-slate-700 transition"
+              className="px-3 py-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 md:text-sm text-xs rounded disabled:opacity-40 disabled:cursor-not-allowed"
               aria-label="Go to last page"
             >
               Last

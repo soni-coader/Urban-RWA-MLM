@@ -344,6 +344,8 @@ export const demoData = {
             profitPercentageAfterFees: 1.00,
             arbitragePercentage: 1.25,
             amountBuy: 1000,
+            amountSell: 1001.25,
+            withdrawalFees: 0.25,
         },
         {
             tradedAt: Math.floor(Date.now() / 1000) - 300, // 5 minutes ago
@@ -358,6 +360,8 @@ export const demoData = {
             profitPercentageAfterFees: 1.40,
             arbitragePercentage: 1.70,
             amountBuy: 500,
+            amountSell: 500.85,
+            withdrawalFees: 0.15,
         },
         {
             tradedAt: Math.floor(Date.now() / 1000) - 1800, // 30 minutes ago
@@ -372,6 +376,8 @@ export const demoData = {
             profitPercentageAfterFees: 1.20,
             arbitragePercentage: 1.50,
             amountBuy: 10000,
+            amountSell: 10015,
+            withdrawalFees: 0.03,
         },
         {
             tradedAt: Math.floor(Date.now() / 1000) - 3600, // 1 hour ago
@@ -386,6 +392,8 @@ export const demoData = {
             profitPercentageAfterFees: 1.92,
             arbitragePercentage: 2.00,
             amountBuy: 2500,
+            amountSell: 2550,
+            withdrawalFees: 2.00,
         },
         {
             tradedAt: Math.floor(Date.now() / 1000) - 7200, // 2 hours ago
@@ -400,6 +408,8 @@ export const demoData = {
             profitPercentageAfterFees: 1.50,
             arbitragePercentage: 1.67,
             amountBuy: 150,
+            amountSell: 152.50,
+            withdrawalFees: 0.25,
         },
     ],
 
@@ -663,6 +673,483 @@ export const demoData = {
             ]
         }
     ],
+
+    // Swap Report Data
+    swapReport: [
+        {
+            userId: "DEMO_USER_001",
+            emgtAmount: 1000,
+            tokenPrice: 2.50,
+            walletType: "Deposit Wallet",
+            currencyType: "EMGT",
+            status: "Completed",
+            createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+            swapDetails: {
+                originalAmount: 2500,
+                fee: 25,
+            },
+        },
+        {
+            userId: "DEMO_USER_001",
+            emgtAmount: 500,
+            tokenPrice: 2.45,
+            walletType: "My Wallet",
+            currencyType: "EMGT",
+            status: "Completed",
+            createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
+            swapDetails: {
+                originalAmount: 1225,
+                fee: 12.25,
+            },
+        },
+        {
+            userId: "DEMO_USER_001",
+            emgtAmount: 2000,
+            tokenPrice: 2.40,
+            walletType: "Deposit Wallet",
+            currencyType: "EMGT",
+            status: "Completed",
+            createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
+            swapDetails: {
+                originalAmount: 4800,
+                fee: 48,
+            },
+        },
+        {
+            userId: "DEMO_USER_001",
+            emgtAmount: 750,
+            tokenPrice: 2.55,
+            walletType: "My Wallet",
+            currencyType: "EMGT",
+            status: "Completed",
+            createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 1 week ago
+            swapDetails: {
+                originalAmount: 1912.50,
+                fee: 19.13,
+            },
+        },
+        {
+            userId: "DEMO_USER_001",
+            emgtAmount: 1500,
+            tokenPrice: 2.48,
+            walletType: "Deposit Wallet",
+            currencyType: "EMGT",
+            status: "Completed",
+            createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), // 10 days ago
+            swapDetails: {
+                originalAmount: 3720,
+                fee: 37.20,
+            },
+        },
+        {
+            userId: "DEMO_USER_001",
+            emgtAmount: 300,
+            tokenPrice: 2.52,
+            walletType: "My Wallet",
+            currencyType: "EMGT",
+            status: "Completed",
+            createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(), // 15 days ago
+            swapDetails: {
+                originalAmount: 756,
+                fee: 7.56,
+            },
+        },
+        {
+            userId: "DEMO_USER_001",
+            emgtAmount: 1200,
+            tokenPrice: 2.47,
+            walletType: "Deposit Wallet",
+            currencyType: "EMGT",
+            status: "Completed",
+            createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(), // 20 days ago
+            swapDetails: {
+                originalAmount: 2964,
+                fee: 29.64,
+            },
+        },
+        {
+            userId: "DEMO_USER_001",
+            emgtAmount: 850,
+            tokenPrice: 2.43,
+            walletType: "My Wallet",
+            currencyType: "EMGT",
+            status: "Completed",
+            createdAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(), // 25 days ago
+            swapDetails: {
+                originalAmount: 2065.50,
+                fee: 20.66,
+            },
+        },
+    ],
+
+    // Stake Income Report Data
+    stakeIncomeReport: [
+        {
+            date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+            planName: "Gold Plan",
+            packageId: "PKG001",
+            amount1: 1000,
+            roi: 8.0,
+            roiAmount: 80,
+            status: "Credited",
+        },
+        {
+            date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+            planName: "Gold Plan",
+            packageId: "PKG001",
+            amount1: 1000,
+            roi: 8.0,
+            roiAmount: 80,
+            status: "Credited",
+        },
+        {
+            date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+            planName: "Platinum Plan",
+            packageId: "PKG002",
+            amount1: 5000,
+            roi: 10.0,
+            roiAmount: 500,
+            status: "Credited",
+        },
+        {
+            date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+            planName: "Gold Plan",
+            packageId: "PKG001",
+            amount1: 1000,
+            roi: 8.0,
+            roiAmount: 80,
+            status: "Credited",
+        },
+        {
+            date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+            planName: "Diamond Plan",
+            packageId: "PKG003",
+            amount1: 10000,
+            roi: 12.0,
+            roiAmount: 1200,
+            status: "Credited",
+        },
+        {
+            date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+            planName: "Platinum Plan",
+            packageId: "PKG002",
+            amount1: 5000,
+            roi: 10.0,
+            roiAmount: 500,
+            status: "Credited",
+        },
+        {
+            date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+            planName: "Gold Plan",
+            packageId: "PKG001",
+            amount1: 1000,
+            roi: 8.0,
+            roiAmount: 80,
+            status: "Credited",
+        },
+    ],
+
+    // Level Income Report Data
+    levelIncomeReport: {
+        selfInvestment: 10000,
+        teamInvestment: 125750,
+        records: [
+            {
+                sr: 1,
+                rank: "Gold Star",
+                rewardAmount: 2500,
+                teamTotalRoiRewardDistributed: 8750,
+                totalTeamInvestment: 45000,
+                stronglegInvestment: 25000,
+                weakestLegInvestment: 20000,
+                distributionDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                status: "Completed",
+            },
+            {
+                sr: 2,
+                rank: "Silver Star",
+                rewardAmount: 1500,
+                teamTotalRoiRewardDistributed: 5250,
+                totalTeamInvestment: 28000,
+                stronglegInvestment: 15000,
+                weakestLegInvestment: 13000,
+                distributionDate: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+                status: "Completed",
+            },
+            {
+                sr: 3,
+                rank: "Bronze Star",
+                rewardAmount: 850,
+                teamTotalRoiRewardDistributed: 3200,
+                totalTeamInvestment: 15750,
+                stronglegInvestment: 8500,
+                weakestLegInvestment: 7250,
+                distributionDate: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+                status: "Completed",
+            },
+        ],
+    },
+
+    // Referral Report Data
+    referralReport: [
+        {
+            date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+            from: "John Smith",
+            deposit: 5000,
+            levelIncome: 150,
+            level: "1",
+            status: "Active",
+        },
+        {
+            date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+            from: "Sarah Johnson",
+            deposit: 3000,
+            levelIncome: 90,
+            level: "1",
+            status: "Active",
+        },
+        {
+            date: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+            from: "Mike Davis",
+            deposit: 2500,
+            levelIncome: 50,
+            level: "2",
+            status: "Active",
+        },
+        {
+            date: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+            from: "Emily Wilson",
+            deposit: 4500,
+            levelIncome: 135,
+            level: "1",
+            status: "Active",
+        },
+        {
+            date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+            from: "David Brown",
+            deposit: 1500,
+            levelIncome: 30,
+            level: "2",
+            status: "Active",
+        },
+        {
+            date: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+            from: "Lisa Anderson",
+            deposit: 3500,
+            levelIncome: 35,
+            level: "3",
+            status: "Active",
+        },
+    ],
+
+    // Bonanza Income Data
+    bonanzaIncome: [
+        {
+            date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+            from: "Team Achievement",
+            teamBusiness: 125750,
+            bonanzaIncome: 6287.50,
+            status: "Approved",
+        },
+        {
+            date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+            from: "Monthly Target",
+            teamBusiness: 98500,
+            bonanzaIncome: 4925,
+            status: "Approved",
+        },
+        {
+            date: new Date(Date.now() - 17 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+            from: "Quarterly Bonus",
+            teamBusiness: 75000,
+            bonanzaIncome: 3750,
+            status: "Approved",
+        },
+        {
+            date: new Date(Date.now() - 24 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+            from: "Team Performance",
+            teamBusiness: 55000,
+            bonanzaIncome: 2750,
+            status: "Pending",
+        },
+    ],
+
+    // Bonanza Plans Data
+    bonanzaPlans: [
+        {
+            _id: "BP001",
+            name: "Bronze Bonanza",
+            roi: 5,
+            minDirect: 5,
+            target: 25000,
+        },
+        {
+            _id: "BP002",
+            name: "Silver Bonanza",
+            roi: 7,
+            minDirect: 10,
+            target: 50000,
+        },
+        {
+            _id: "BP003",
+            name: "Gold Bonanza",
+            roi: 10,
+            minDirect: 15,
+            target: 100000,
+        },
+        {
+            _id: "BP004",
+            name: "Platinum Bonanza",
+            roi: 12,
+            minDirect: 20,
+            target: 200000,
+        },
+        {
+            _id: "BP005",
+            name: "Diamond Bonanza",
+            roi: 15,
+            minDirect: 25,
+            target: 500000,
+        },
+    ],
+
+    // Level Rewards Data
+    levelRewards: {
+        plans: [
+            {
+                _id: "LR001",
+                name: "Starter Reward",
+                roi: 3,
+                strongLeg: 5000,
+                weakLeg: 3000,
+                target: 10000,
+            },
+            {
+                _id: "LR002",
+                name: "Bronze Reward",
+                roi: 5,
+                strongLeg: 15000,
+                weakLeg: 10000,
+                target: 25000,
+            },
+            {
+                _id: "LR003",
+                name: "Silver Reward",
+                roi: 7,
+                strongLeg: 30000,
+                weakLeg: 20000,
+                target: 50000,
+            },
+            {
+                _id: "LR004",
+                name: "Gold Reward",
+                roi: 10,
+                strongLeg: 60000,
+                weakLeg: 40000,
+                target: 100000,
+            },
+            {
+                _id: "LR005",
+                name: "Platinum Reward",
+                roi: 12,
+                strongLeg: 120000,
+                weakLeg: 80000,
+                target: 200000,
+            },
+            {
+                _id: "LR006",
+                name: "Diamond Reward",
+                roi: 15,
+                strongLeg: 300000,
+                weakLeg: 200000,
+                target: 500000,
+            },
+        ],
+        totalCount: 6,
+    },
+
+    // Referral Income Data (Level-wise)
+    referralIncome: {
+        "1": {
+            percentage: 3,
+            users: 8,
+            income: 2400,
+        },
+        "2": {
+            percentage: 2,
+            users: 15,
+            income: 1800,
+        },
+        "3": {
+            percentage: 1,
+            users: 24,
+            income: 960,
+        },
+    },
+
+    // Level Wise Team Data
+    levelWiseTeam: {
+        "1": [
+            {
+                id: "USR001",
+                userName: "john_smith",
+                plan: "Gold Plan",
+                joinDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+            },
+            {
+                id: "USR002",
+                userName: "sarah_j",
+                plan: "Platinum Plan",
+                joinDate: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+            },
+            {
+                id: "USR003",
+                userName: "mike_davis",
+                plan: "Gold Plan",
+                joinDate: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+            },
+        ],
+        "2": [
+            {
+                id: "USR004",
+                userName: "emily_w",
+                plan: "Diamond Plan",
+                joinDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+            },
+            {
+                id: "USR005",
+                userName: "david_brown",
+                plan: "Gold Plan",
+                joinDate: new Date(Date.now() - 18 * 24 * 60 * 60 * 1000).toISOString(),
+            },
+        ],
+        "3": [
+            {
+                id: "USR006",
+                userName: "lisa_a",
+                plan: "Platinum Plan",
+                joinDate: new Date(Date.now() - 22 * 24 * 60 * 60 * 1000).toISOString(),
+            },
+        ],
+    },
+
+    // User Profile Data
+    userProfile: {
+        email: "demo@example.com",
+        walletAddress: "0xDemo1234567890abcdef",
+    },
+
+    // Withdrawal Balance Data
+    withdrawalBalance: {
+        balance: {
+            my: 15750,
+            principal: 10000,
+            deposit: 5000,
+            emgt: 2500,
+            referral: 3250,
+        },
+        walletAddress: "0xDemo1234567890abcdef",
+    },
 
     // More routes data will be added in Phase 2
 };

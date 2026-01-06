@@ -1,0 +1,109 @@
+.token-section {
+  width: 100%;
+  min-height: 70vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 80px 20px;
+}
+
+/* Dark overlay for readability */
+.overlay {
+  width: 100%;
+  height: 100%;
+  padding: 40px 0;
+}
+
+/* ===== HEADING ===== */
+.token-heading {
+  text-align: center;
+  color: #ffffff;
+  font-family: DM Sans;
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 150%;
+    text-align: center;
+    vertical-align: middle;
+    text-transform: uppercase;
+  margin-bottom: 50px;
+}
+
+/* ===== CARD WRAPPER ===== */
+.token-cards {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+/* ===== CARD ===== */
+.token-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px 40px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+  min-height: 157px;
+}
+
+.token-card h3 {
+  font-family: DM Sans;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 140%;
+    vertical-align: middle;
+    text-transform: capitalize;
+  color: #111111;
+  margin-bottom: 10px;
+}
+
+/* Blue divider-tok under heading */
+.divider-tok {
+  display: block;
+  width: 100%;
+  max-width: 963px;
+  height: 1px;
+  background: linear-gradient(90deg, #0001FF 0%, #FFFFFF 100%);
+  margin-bottom: 15px;
+}
+
+.token-card p {
+  font-family: DM Sans;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 140%;
+    vertical-align: middle;
+    text-transform: capitalize;
+  color: #585858;
+  max-width: 889px;
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 768px) {
+    .token-section {
+  padding: 40px 10px;
+}
+
+  .token-heading {
+    font-size: 28px;
+  }
+
+  .token-card {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .token-heading {
+    font-size: 24px;
+  }
+
+  .token-card {
+    padding: 14px;
+  }
+
+  .token-card p {
+    font-size: 13px;
+  }
+}

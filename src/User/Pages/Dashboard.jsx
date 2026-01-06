@@ -579,7 +579,7 @@ const Dashboard = () => {
             <div
               className={`w-8 h-8 bg-blue-500 mb-3 rounded-full flex items-center justify-center`}
             >
-              <FaUsers />
+              <FaUsers  className="text-white" />
             </div>
             <h3 className="text-lg font-semibold text-blue-700 mb-4">
               REFERRAL LINK
@@ -809,12 +809,12 @@ const Dashboard = () => {
 
         <div className="theme-card-style border-gradient lg:col-span-2 p-6 text-center">
           <h3 className="text-lg font-semibold text-blue-700 mb-4">
-            EASY MONEY TOKEN OVERVIEW
+             TOKEN OVERVIEW
           </h3>
           <div className="flex items-center justify-center mx-auto mb-3">
             <img src={logoicon} className="w-10" alt="Token Logo" />
           </div>
-          <p className="text-lg font-bold mb-1">Easy Money Token Price</p>
+          <p className="text-lg font-bold mb-1">Urban RWA Token Price</p>
           <p className="text-white text-sm">
             1 URWA = USDT {displayData.tokenOverview?.price || "0"}
           </p>
@@ -838,10 +838,10 @@ const Dashboard = () => {
             </h3>
           </div>
           <h4 className="text-xl   font-bold mb-4">
-            Empowering Decentralized Income with Easy Money
+            Empowering Decentralized Income with Urban RWA
           </h4>
           <p className="   text-sm leading-relaxed">
-            Easy Money Project is a next-gen blockchain-based MLM (Multi-Level
+            Urban RWA Project is a next-gen blockchain-based MLM (Multi-Level
             Marketing) platform designed to empower individuals with a
             decentralized, secure, and transparent income model.
           </p>

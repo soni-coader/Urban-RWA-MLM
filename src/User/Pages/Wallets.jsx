@@ -89,7 +89,7 @@ const Wallets = () => {
         >
           <div className="flex flex-col-reverse gap-3 justify-between">
             <h2 className="text-sm font-semibold flex items-center gap-2">
-              <FaWallet className="text-primary" />
+              <FaWallet className="text-blue-700" />
               {wallet.name}
             </h2>
             <span className="text-xs text-gray-500">Wallet #{idx + 1}</span>

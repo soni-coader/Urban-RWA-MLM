@@ -87,7 +87,7 @@ const History = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-2xl uppercase text-primary font-bold">
+          <h1 className="text-2xl uppercase text-blue-700 font-bold">
             Trading Balance History
           </h1>
           <p className="text-gray-600 mt-2">
@@ -127,7 +127,7 @@ const History = () => {
 
       {/* Balance History Section */}
       <div className="theme-card-style border-gradient p-4 border border-gray-200 mb-6">
-        <h2 className="text-lg font-semibold text-primary mb-4">Trading Balance History</h2>
+        <h2 className="text-lg font-semibold text-blue-700 mb-4">Trading Balance History</h2>
         {loading ? (
           <div>Loading balance history...</div>
         ) : error ? (

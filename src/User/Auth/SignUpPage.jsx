@@ -119,7 +119,7 @@ const SignUpPage = () => {
     <div className="w-full h-fit md:h-screen overflow-hidden shadow-xl flex flex-col-reverse md:flex-row">
       <div className="w-full h-screen md:w-1/2 bg-[#1a152d] relative">
         <img src={loginimg} alt="Join Community" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/40 flex flex-col justify-between p-6">
+        <div className="absolute inset-0 bg-black/0 flex flex-col justify-between p-6">
           <Link
             to="/"
             className="self-end text-sm text-white bg-white/10 px-4 py-1 rounded-full backdrop-blur-md"
@@ -149,7 +149,7 @@ const SignUpPage = () => {
         </Link>
         <div className="w-full max-w-xl">
           <div className="mb-5">
-            <img src={logo} className="w-20" alt="Logo" />
+            <img src={logo} className="w-40" alt="Logo" />
           </div>
           <h2 className="text-3xl font-bold mb-4 text-gray-800">Create your account</h2>
           <p className="text-sm text-gray-600 mb-6">

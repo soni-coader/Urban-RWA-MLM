@@ -113,7 +113,7 @@ const Analytics = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-2xl uppercase text-primary font-bold">
+          <h1 className="text-2xl uppercase text-blue-700 font-bold">
             Trading Analytics Dashboard
           </h1>
           <p className="text-slate-400 mt-2">
@@ -169,7 +169,7 @@ const Analytics = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
         {/* Profit Over Time Chart */}
         <div className="theme-card-style border-gradient p-6 rounded-xl">
-          <h3 className="text-lg font-semibold text-primary mb-4">Profit Over Time</h3>
+          <h3 className="text-lg font-semibold text-blue-700 mb-4">Profit Over Time</h3>
           {loading ? (
             <div className="text-gray-600">Loading analytics data...</div>
           ) : error ? (
@@ -193,7 +193,7 @@ const Analytics = () => {
 
         {/* Win/Loss Bar Chart */}
         <div className="theme-card-style border-gradient p-6 rounded-xl">
-          <h3 className="text-lg font-semibold text-primary mb-4">Win vs Loss Trades</h3>
+          <h3 className="text-lg font-semibold text-blue-700 mb-4">Win vs Loss Trades</h3>
           {loading ? (
             <div className="text-gray-600">Loading analytics data...</div>
           ) : error ? (
@@ -223,7 +223,7 @@ const Analytics = () => {
       {/* Exchange Performance Chart */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
         <div className="theme-card-style border-gradient p-6 rounded-xl">
-          <h3 className="text-lg font-semibold text-primary mb-4">Exchange Performance</h3>
+          <h3 className="text-lg font-semibold text-blue-700 mb-4">Exchange Performance</h3>
           {loading ? (
             <div className="text-gray-600">Loading analytics data...</div>
           ) : error ? (
@@ -252,7 +252,7 @@ const Analytics = () => {
 
         {/* Pair Performance Chart */}
         <div className="theme-card-style border-gradient p-6 rounded-xl">
-          <h3 className="text-lg font-semibold text-primary mb-4">Pair Performance</h3>
+          <h3 className="text-lg font-semibold text-blue-700 mb-4">Pair Performance</h3>
           {loading ? (
             <div className="text-gray-600">Loading analytics data...</div>
           ) : error ? (

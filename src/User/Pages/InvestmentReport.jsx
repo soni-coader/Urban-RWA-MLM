@@ -317,7 +317,7 @@ const InvestmentReport = () => {
               Confirm {selectedAction}
             </h3>
             <p className="mb-6 text-sm text-gray-300">
-              Are you sure you want to <span className="font-bold">{selectedAction}</span> for <span className="text-primary">{selectedRow?.planName}</span>?
+              Are you sure you want to <span className="font-bold">{selectedAction}</span> for <span className="text-blue-700">{selectedRow?.planName}</span>?
               <br />
               Start Date: {selectedRow?.startDate}
               <br />

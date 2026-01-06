@@ -16,6 +16,8 @@ import axios from 'axios';
 import { appConfig } from '../../config/appConfig';
 import moment from 'moment';
 import SkeletonLoader from '../Components/Comman/Skeletons';
+import { useDemoMode } from '../Contexts/DemoModeContext';
+import { getDemoData } from '../Data/demoData';
 
 const columnHelper = createColumnHelper();
 
@@ -96,6 +98,7 @@ const fetchDailyROI = async () => {
 };
 
 const StakeIncomeReport = () => {
+  const { isDemoMode } = useDemoMode();
   const [globalFilter, setGlobalFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
@@ -112,11 +115,18 @@ const StakeIncomeReport = () => {
     staleTime: 1000 * 60 * 2, // 2 mins fresh
     cacheTime: 1000 * 60 * 5, // 5 mins cache
     refetchOnWindowFocus: false,
+    enabled: !isDemoMode,
   });
+
+  // Use demo data if demo mode is active
+  const displayData = isDemoMode ? getDemoData("stakeIncomeReport").map(item => ({
+    ...item,
+    date: moment(item.date).utcOffset(330).format('YYYY-MM-DD HH:mm:ss')
+  })) : data;
 
   // 🔹 Filtering
   const filteredData = useMemo(() => {
-    let result = data;
+    let result = displayData;
     if (statusFilter) {
       result = result.filter((row) => row.status === statusFilter);
     }
@@ -132,7 +142,7 @@ const StakeIncomeReport = () => {
       );
     }
     return result;
-  }, [data, statusFilter, globalFilter]);
+  }, [displayData, statusFilter, globalFilter]);
 
   // 🔹 Table instance
   const table = useReactTable({
@@ -159,7 +169,7 @@ const StakeIncomeReport = () => {
   return (
     <div className="theme-card-style border-gradient text-gray-800 p-6 max-w-full mx-auto">
       <div className="flex justify-between mb-6 gap-4 flex-wrap-reverse">
-        <h2 className="text-2xl text-primary font-bold">Stake Income Report</h2>
+        <h2 className="text-2xl text-blue-700 font-bold">Stake Income Report</h2>
         <button
           onClick={exportToExcel}
           disabled={loading || data.length === 0}
@@ -208,7 +218,7 @@ const StakeIncomeReport = () => {
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
-                        className="text-left px-4 py-2 border-b border-gray-200 text-primary text-nowrap"
+                        className="text-left px-4 py-2 border-b border-gray-200 text-blue-700 text-nowrap"
                       >
                         {flexRender(
                           header.column.columnDef.header,

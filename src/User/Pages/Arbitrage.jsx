@@ -24,6 +24,8 @@ import {
 import { BiTrendingUp } from "react-icons/bi";
 import { appConfig } from "../../config/appConfig";
 import SkeletonLoader from "../Components/Comman/Skeletons";
+import { useDemoMode } from "../Contexts/DemoModeContext";
+import { getDemoData } from "../Data/demoData";
 
 const columnHelper = createColumnHelper();
 
@@ -191,6 +193,7 @@ const Arbitrage = () => {
     pageSize: 10,
   });
   const [isExportingExcel, setIsExportingExcel] = useState(false);
+  const { isDemoMode } = useDemoMode();
 
   // TanStack Query for data fetching
   const {
@@ -204,35 +207,39 @@ const Arbitrage = () => {
     staleTime: 1000 * 60 * 2, // 2 minutes
     cacheTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: false,
+    enabled: !isDemoMode, // Disable API call in demo mode
   });
+
+  // Use demo data if demo mode is active, otherwise use API data
+  const displayData = isDemoMode ? getDemoData("arbitrage") : arbitrageRows;
 
   // Stats calculations
   const stats = useMemo(() => {
     const nowSec = Math.floor(Date.now() / 1000);
     const last24hSec = nowSec - 24 * 3600;
-    const trades24h = arbitrageRows.filter((row) => row.tradedAt >= last24hSec);
-    const totalOpportunities = arbitrageRows.length;
+    const trades24h = displayData.filter((row) => row.tradedAt >= last24hSec);
+    const totalOpportunities = displayData.length;
     const avgProfitMargin =
-      arbitrageRows.length > 0
-        ? arbitrageRows.reduce(
+      displayData.length > 0
+        ? displayData.reduce(
           (sum, row) => sum + (Number(row.profitPercentage) || 0),
           0
-        ) / arbitrageRows.length
+        ) / displayData.length
         : 0;
     const volume24h = trades24h.reduce(
       (sum, row) => sum + (Number(row.amountBuy) || 0),
       0
     );
-    const totalGrossProfit = arbitrageRows.reduce(
+    const totalGrossProfit = displayData.reduce(
       (sum, row) => sum + (Number(row.profit) || 0),
       0
     );
-    const totalNetProfit = arbitrageRows.reduce(
+    const totalNetProfit = displayData.reduce(
       (sum, row) => sum + (Number(row.profitAfterFees) || 0),
       0
     );
     const avgProfitAmount =
-      arbitrageRows.length > 0 ? totalGrossProfit / arbitrageRows.length : 0;
+      displayData.length > 0 ? totalGrossProfit / displayData.length : 0;
 
     const formatCurrency = (value) =>
       `$${Number(value).toLocaleString("en-US", {
@@ -278,11 +285,11 @@ const Arbitrage = () => {
         icon: <FaDollarSign />,
       },
     ];
-  }, [arbitrageRows]);
+  }, [displayData]);
 
   // Filtered data
   const filteredData = useMemo(() => {
-    let data = arbitrageRows;
+    let data = displayData;
     if (exchangeFilter) {
       data = data.filter(
         (row) =>
@@ -302,7 +309,7 @@ const Arbitrage = () => {
       );
     }
     return data;
-  }, [exchangeFilter, globalFilter, arbitrageRows]);
+  }, [exchangeFilter, globalFilter, displayData]);
 
   // TanStack Table setup
   const table = useReactTable({
@@ -415,7 +422,7 @@ const Arbitrage = () => {
     <div className="text-gray-800 rounded-md max-w-full mx-auto">
       {/* Header */}
       <div className="flex justify-between mb-6 gap-4 flex-wrap-reverse">
-        <h2 className="text-2xl text-primary font-bold">
+        <h2 className="text-2xl text-blue-700 font-bold">
           Arbitrage Trading Dashboard
         </h2>
         <button
@@ -468,7 +475,7 @@ const Arbitrage = () => {
           </option>
           {[
             ...new Set(
-              arbitrageRows.flatMap((row) => [
+              displayData.flatMap((row) => [
                 row.exBuy?.toLowerCase(),
                 row.exSell?.toLowerCase(),
               ])
@@ -502,7 +509,7 @@ const Arbitrage = () => {
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
-                        className="text-left px-4 py-2 border-b border-gray-200 text-primary text-nowrap font-semibold"
+                        className="text-left px-4 py-2 border-b border-gray-200 text-blue-700 text-nowrap font-semibold"
                       >
                         {flexRender(
                           header.column.columnDef.header,

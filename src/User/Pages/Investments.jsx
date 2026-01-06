@@ -132,14 +132,14 @@ const Investments = () => {
   return (
     <>
       {/* Demo Mode Indicator */}
-      {isDemoMode && (
-        <div className="mb-4 p-3 bg-green-500/20 border border-green-500/30 rounded-lg">
-          <p className="text-green-400 text-sm">🚀 Demo Mode: Showing sample investment plans</p>
+      {/* {isDemoMode && (
+        <div className="mb-4 p-3 bg-blue-500/20 border border-blue-500/30 rounded-lg">
+          <p className="text-blue-400 text-sm">🚀 Demo Mode: Showing sample investment plans</p>
         </div>
-      )}
+      )} */}
 
       <div className="mb-6 flex flex-col sm:flex-row justify-between items-center">
-        <h2 className="text-2xl text-primary font-bold">Investment Plans</h2>
+        <h2 className="text-2xl text-blue-700 font-bold">Investment Plans</h2>
         <div className="text-black text-lg font-semibold mt-2 sm:mt-0">
           Deposit Wallet: ${displayBalance.toLocaleString()}
         </div>
@@ -162,15 +162,15 @@ const Investments = () => {
               className="relative group p-[1px]  theme-card-style   border-gradient   hover:shadow-sm hover:shadow-[rgba(34,152,211,0.53)] transition-all duration-300"
             >
               <div className="relative rounded-xl theme-card-style h-full p-6 flex flex-col justify-between">
-                 
 
-                <div className="text-xs uppercase font-semibold bg-gradient-to-r from-[#2298D3] to-[#05CE99] text-white px-3 py-1 rounded-full w-max mb-4">
+
+                <div className="text-xs uppercase font-semibold bg-gradient-to-r from-blue-700 to-violet-700 text-white px-3 py-1 rounded-full w-max mb-4">
                   Most Popular
                 </div>
 
                 <div className="z-10 space-y-1 mb-6">
                   <h2 className="text-xl uppercase font-semibold tracking-wider">{plan.name}</h2>
-                  <p className="text-4xl font-extrabold text-green-400">
+                  <p className="text-4xl font-extrabold text-blue-400">
                     ${plan.amount.toLocaleString()}
                   </p>
                 </div>
@@ -192,7 +192,7 @@ const Investments = () => {
                 </ul>
 
                 <button
-                  className="z-10 mt-auto w-full py-2 rounded-md text-white font-semibold bg-gradient-to-r from-[#2298d341] to-[#05CE99] hover:opacity-90 transition"
+                  className="z-10 mt-auto w-full py-2 rounded-md text-white font-semibold bg-gradient-to-r from-blue-700 to-violet-700 hover:opacity-90 transition"
                   onClick={() => handleInvestClick(plan)}
                   disabled={plan.amount > displayBalance || isDemoMode}
                   aria-label={`Invest in ${plan.name} plan for $${plan.amount.toLocaleString()}`}
@@ -212,7 +212,7 @@ const Investments = () => {
             <h2 className="text-xl font-bold mb-4 text-center">Confirm Investment</h2>
             <p className="text-sm text-center text-gray-600 mb-6">
               Are you sure you want to purchase the{" "}
-              <span className="font-semibold text-green-400">{selectedPlan.name}</span> plan for $
+              <span className="font-semibold text-blue-400">{selectedPlan.name}</span> plan for $
               {selectedPlan.amount.toLocaleString()}?
             </p>
             <div className="flex justify-center gap-4">

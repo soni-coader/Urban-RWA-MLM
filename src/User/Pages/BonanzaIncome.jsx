@@ -44,8 +44,8 @@ const columns = [
     cell: info => (
       <span
         className={`px-2 py-1 rounded text-xs font-semibold ${info.getValue() === 'Approved'
-            ? 'bg-green-800 text-green-300'
-            : 'bg-yellow-800 text-yellow-300'
+          ? 'bg-green-800 text-green-300'
+          : 'bg-yellow-800 text-yellow-300'
           }`}
       >
         {info.getValue()}
@@ -147,7 +147,7 @@ const BonanzaIncomeReport = () => {
   return (
     <div className="theme-card-style border-gradient text-gray-800 p-6 rounded-md max-w-full mx-auto">
       <div className="flex justify-between mb-6 gap-4 flex-wrap-reverse">
-        <h2 className="text-2xl text-primary font-bold">Level Income Report</h2> {/* Updated title */}
+        <h2 className="text-2xl text-blue-700 font-bold">Level Income Report</h2> {/* Updated title */}
         <button
           onClick={exportToExcel}
           disabled={loading || data.length === 0}
@@ -187,7 +187,7 @@ const BonanzaIncomeReport = () => {
                 {headerGroup.headers.map(header => (
                   <th
                     key={header.id}
-                    className="text-left px-4 py-2 border-b border-gray-200 text-primary text-nowrap font-semibold"
+                    className="text-left px-4 py-2 border-b border-gray-200 text-blue-700 text-nowrap font-semibold"
                   >
                     {flexRender(header.column.columnDef.header, header.getContext())}
                   </th>

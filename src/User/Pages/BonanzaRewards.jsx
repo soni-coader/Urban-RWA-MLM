@@ -79,7 +79,7 @@ const BonanzaRewards = () => {
 
   return (
     <div className="theme-card-style border-gradient text-gray-800 p-6 rounded-md max-w-full mx-auto">
-      <h2 className="text-xl md:text-2xl font-bold text-center mb-6 text-primary">Bonanza Rewards</h2>
+      <h2 className="text-xl md:text-2xl font-bold text-center mb-6 text-blue-700">Bonanza Rewards</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {plans.map((plan, index) => (
           <div

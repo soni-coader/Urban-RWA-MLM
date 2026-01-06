@@ -192,7 +192,7 @@ const MyProfile = () => {
                 setActiveTab(idx === 0 ? "personal" : "password")
               }
               className={`px-4 py-2 text-sm font-semibold ${activeTab === (idx === 0 ? "personal" : "password")
-                  ? "text-white border-b-2 border-blue-400 bg-gradient-to-b from-green-400/20 to-sky-400/50 rounded-t"
+                  ? "text-white border-b-2 border-blue-400 bg-gradient-to-b from-blue-700 to-blue-600 rounded-t"
                   : "text-gray-500"
                 }`}
             >

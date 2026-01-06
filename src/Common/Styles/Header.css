@@ -1,0 +1,304 @@
+/* ================= HEADER ================= */
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin: 0px auto;
+  max-width: 1280px;
+}
+
+.logo img {
+  max-width: 117px;
+  height: auto;
+}
+
+/* ================= NAV MENU ================= */
+
+.nav-menu {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nav-menu ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  justify-content: left;
+  position: relative;
+  padding: 10px 20px;
+  border-radius: 46px;
+  background: #FFFFFF38;
+}
+
+/* GRADIENT BORDER */
+.nav-menu ul::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 0.5px;
+  border-radius: 46px;
+  background: linear-gradient(
+    90deg,
+    rgba(138, 138, 138, 0.2025),
+    rgba(138, 138, 138, 0.25)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.nav-menu ul li a {
+  text-decoration: none;
+  font-family: DM Sans;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130%;
+  text-align: center;
+  color: #5A5A5A;
+  padding: 5px 5px;
+}
+
+.nav-menu ul li a.active,
+.nav-menu ul li a:hover {
+  font-weight: 600;
+  font-size: 12px;
+  color: #255BF3;
+  border: 0.5px solid #255BF3;
+  border-radius: 17px;
+  padding: 5px 12px;
+}
+
+/* ================= AUTH BUTTONS ================= */
+
+.auth-btns {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* LOGIN BUTTON (EXISTING) */
+.buy-token-btn {
+  background: linear-gradient(90deg, #2460F5 0%, #3B1DDA 100%);
+  font-family: DM Sans;
+  font-weight: 500;
+  font-size: 16px;
+  color: #FFFFFF;
+  cursor: pointer;
+  border-radius: 40px;
+  height: 41px;
+  width: 131px;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.buy-token-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 10px 25px #2460F5;
+}
+
+.buy-token-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.buy-token-btn:hover::before {
+  left: 100%;
+}
+
+/* SIGN UP BUTTON (NEW) */
+.signup-btn {
+  height: 41px;
+  width: 131px;
+  border-radius: 40px;
+  border: 1px solid #2460F5;
+  background: #ffffff;
+  color: #2460F5;
+  font-family: DM Sans;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.signup-btn:hover {
+  background: #2460F5;
+  color: #ffffff;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 10px 25px rgba(36, 96, 245, 0.4);
+}
+
+/* ================= MOBILE MENU ================= */
+
+.mobile-menu-toggle {
+  display: none;
+}
+
+.hamburger-icon {
+  width: 25px;
+  height: 3px;
+  background-color: #255BF3;
+  display: block;
+  position: relative;
+}
+
+.hamburger-icon::before,
+.hamburger-icon::after {
+  content: '';
+  width: 25px;
+  height: 3px;
+  background-color: #255BF3;
+  position: absolute;
+  left: 0;
+}
+
+.hamburger-icon::before {
+  top: -8px;
+}
+
+.hamburger-icon::after {
+  bottom: -8px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1130px) {
+  .buy-token-btn,
+  .signup-btn {
+    width: 119px;
+  }
+  .nav-menu ul {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 840px) {
+  .header {
+    padding: 1rem 1.5rem;
+  }
+  .buy-token-btn,
+  .signup-btn {
+    width: 108px;
+  }
+}
+
+@media (max-width: 767px) {
+  .header {
+    padding: 8px 15px;
+    justify-content: space-between;
+    gap: 15px;
+  }
+
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: 80px;
+    right: 0;
+    width: 100%;
+    background: #ffffff;
+    z-index: 50;
+  }
+
+  .nav-menu.open {
+    display: block;
+    padding-bottom: 2rem;
+  }
+
+  .nav-menu ul {
+    flex-direction: column;
+    padding: 10px;
+    background: transparent;
+  }
+
+  .nav-menu ul::before {
+    display: none;
+  }
+
+  .nav-menu ul li {
+    padding: 15px 0;
+    margin: 0 20px;
+    border: 1px solid #255BF3;
+  }
+
+  .auth-btns {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .buy-token-btn,
+  .signup-btn {
+    width: 88px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+    order: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    gap: 5px;
+  }
+  .buy-token-btn,
+  .signup-btn {
+    width: 75px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .logo img {
+    max-width: 100px;
+  }
+
+  .hamburger-icon,
+  .hamburger-icon::before,
+  .hamburger-icon::after {
+    width: 20px;
+  }
+}
+
+
+
+@media (max-width: 340px) {
+  
+  .logo img {
+    max-width: 80px;
+  }
+  .buy-token-btn,
+  .signup-btn {
+    width: 60px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .auth-btns {
+  gap: 5px;
+}
+
+}

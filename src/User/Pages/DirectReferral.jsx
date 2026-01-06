@@ -91,7 +91,7 @@ const DirectReferral = () => {
   return (
     <div className="theme-card-style border-gradient text-gray-800 p-6 rounded-md max-w-full mx-auto">
       <div className="flex justify-between mb-6 gap-4 flex-wrap-reverse">
-        <h2 className="text-2xl text-primary font-bold">Direct Referral</h2>
+        <h2 className="text-2xl text-blue-700 font-bold">Direct Referral</h2>
         <button
           onClick={exportToExcel}
           className="px-3 py-1 h-fit text-base border flex items-center justify-center gap-2 border-gray-300 rounded bg-white hover:bg-gray-50 transition">
@@ -126,7 +126,7 @@ const DirectReferral = () => {
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
-                  <th key={header.id} className="text-left px-4 py-2 border-b border-gray-200 text-primary text-nowrap">
+                  <th key={header.id} className="text-left px-4 py-2 border-b border-gray-200 text-blue-700 text-nowrap">
                     {flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
                 ))}

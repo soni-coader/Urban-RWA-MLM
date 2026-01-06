@@ -8,8 +8,8 @@ const projectId = '920dae0152ca91d124e083f6a74a94b6';
 const networks = [bscTestnet, bsc];
 
 const metadata = {
-  name: 'EM Bot',
-  description: 'EM Bot Presale',
+  name: 'Urban RWA',
+  description: 'Urban RWA Presale',
   url: 'https://urawt.co' || 'http://localhost:5173',
   icons: ['https://assets.reown.com/reown-profile-pic.png']
 }

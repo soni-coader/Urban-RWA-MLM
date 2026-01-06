@@ -219,7 +219,7 @@ const TeamTreeView = () => {
       }}
     >
       <div className="text-xs absolute left-4 top-4 rounded-xl bg-gray-800 text-white shadow-lg w-fit p-4 space-y-1">
-        <p className="font-bold text-sm text-primary mb-1">Manual</p>
+        <p className="font-bold text-sm text-blue-700 mb-1">Manual</p>
         <p>
           <span className="text-green-300">Click node</span> → Expand / Collapse team
         </p>

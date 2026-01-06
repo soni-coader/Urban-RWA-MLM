@@ -1,0 +1,137 @@
+.how-section {
+  width: 100%;
+  padding: 80px 20px;
+  background: #ffffff;
+}
+
+.how-container {
+  max-width: 1280px;
+  margin: auto;
+  text-align: center;
+}
+
+/* ===== LABEL ===== */
+.how-label {
+  display: inline-block;
+  color: #3334E3;
+  font-family: "DM Sans";
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 160%;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.how-title {
+  font-family: "DM Sans";
+  font-weight: 500;
+  font-size: 44px;
+  line-height: 130%;
+  color: #000000;
+  max-width: 520px;
+  margin: 10px auto 40px;
+}
+
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(260px, 1fr));
+  gap: 30px;
+  justify-content: center; 
+}
+
+
+.how-card {
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: 100%;
+  padding: 30px 30px 80px;
+  border-radius: 20px;
+  text-align: left;
+  transition: all 0.3s ease;
+  border: 1px solid #E4E4FE;
+  box-shadow: 7px 5px 4px 0px #00000026;
+  height: 273px;
+  max-width: 302px;
+  width: 100%;
+  margin: auto;         
+}
+
+.how-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.18);
+}
+
+/* ===== STEP NUMBER ===== */
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 0.5px solid #3334E3;
+  color: #3334E3;
+  font-family: "DM Sans";
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 140%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.how-card h3 {
+  font-family: "DM Sans";
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 130%;
+  text-transform: capitalize;
+  color: #141414;
+  margin-bottom: 14px;
+}
+
+.how-card p {
+  font-family: "DM Sans";
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 140%;
+  text-transform: capitalize;
+  color: #363636;
+}
+
+/* ============ RESPONSIVE ============ */
+
+@media (max-width: 1024px) {
+  .how-grid {
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    justify-content: center;
+  }
+
+  .how-title {
+    font-size: 36px;
+  margin: 5px auto 30px;
+  }
+
+  .how-label {
+  font-size: 20px;
+}
+}
+
+@media (max-width: 600px) {
+  .how-grid {
+    grid-template-columns: 1fr;
+    justify-content: center;
+  }
+
+   .how-label {
+  font-size: 16px;
+}
+
+  .how-title {
+    font-size: 24px;
+  margin: 5px auto 20px;
+  }
+
+  .how-card {
+    background-size: 85%;
+  }
+}

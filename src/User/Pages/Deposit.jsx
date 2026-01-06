@@ -114,7 +114,7 @@ const Deposit = () => {
     }
     navigator.clipboard.writeText(walletAddress);
     toast.success("Wallet address copied to clipboard!", {
-      icon: <FaCheckCircle className="text-primary" />,
+      icon: <FaCheckCircle className="text-blue-700" />,
     });
   };
 
@@ -264,7 +264,7 @@ const Deposit = () => {
       <div className="theme-card-style border-gradient text-gray-800 p-5 rounded-md max-w-2xl mx-auto">
         <div className="flex justify-center mb-6 border-b border-gray-200 gap-4">
           {/* <button
-            className={`px-4 py-2 rounded-t ${method === 'qr' ? 'text-white border-b-2 border-sky-400 bg-gradient-to-b from-primary/50 to-sky-400/50' : 'bg-slate-800/50'}`}
+            className={`px-4 py-2 rounded-t ${method === 'qr' ? 'text-white border-b-2 border-sky-400 bg-gradient-to-b from-blue-700/50 to-sky-400/50' : 'bg-slate-800/50'}`}
             onClick={() => setMethod('qr')}
           >
             Deposit via Cryptapi
@@ -278,7 +278,7 @@ const Deposit = () => {
           </button>
           <button
             className={`px-4 py-2 rounded-t md:text-base text-sm ${method === "wallet"
-              ? "text-white border-b-2 border-sky-400 bg-gradient-to-b from-primary/50 to-sky-400/50"
+              ? "text-white border-b-2 border-sky-400 bg-gradient-to-b from-blue-700/50 to-sky-400/50"
               : "bg-gray-100"
               }`}
             onClick={() => setMethod("wallet")}
@@ -306,7 +306,7 @@ const Deposit = () => {
           //       </option> */}
           //     </select>
           //   </div>
-          //   <div className="bg-gradient-to-br from-secondary/50 to-primary/50 p-4 rounded flex justify-center">
+          //   <div className="bg-gradient-to-br from-secondary/50 to-blue-700/50 p-4 rounded flex justify-center">
           //     {isConnected ? (
           //       <QRCode
           //         value={walletAddress}
@@ -362,7 +362,7 @@ const Deposit = () => {
               </button>
               {isConnected && (
                 <>
-                  <span className="text-primary text-sm">
+                  <span className="text-blue-700 text-sm">
                     Wallet: {address.slice(0, 6)}...{address.slice(-4)}
                   </span>
                   {displayUsdtBalance !== null && (

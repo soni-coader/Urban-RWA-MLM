@@ -16,6 +16,8 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { appConfig } from "../../config/appConfig";
 import SkeletonLoader from "../Components/Comman/Skeletons";
+import { useDemoMode } from '../Contexts/DemoModeContext';
+import { getDemoData } from '../Data/demoData';
 
 const columnHelper = createColumnHelper();
 
@@ -23,7 +25,7 @@ const columns = [
   {
     id: "sno",
     header: "S.No",
-    cell: ({ row }) => <div className="text-sm text-secondary">{row.index + 1}</div>,
+    cell: ({ row }) => <div className="text-sm text-gray-600">{row.index + 1}</div>,
   },
   columnHelper.accessor("id", {
     header: "ID",
@@ -48,6 +50,7 @@ const columns = [
 ];
 
 const LevelWiseTeam = () => {
+  const { isDemoMode } = useDemoMode();
   const [globalFilter, setGlobalFilter] = useState("");
   const [levelFilter, setLevelFilter] = useState("");
   const [pagination, setPagination] = useState({
@@ -79,7 +82,7 @@ const LevelWiseTeam = () => {
 
       return transformApiData(result.data.data);
     },
-    enabled: !!token,
+    enabled: !!token && !isDemoMode,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
     onError: (err) => {
@@ -88,6 +91,25 @@ const LevelWiseTeam = () => {
       }
     },
   });
+
+  // Use demo data if demo mode is active
+  const displayData = isDemoMode ? (() => {
+    const demoLevelWiseData = getDemoData("levelWiseTeam");
+    const flattenedData = [];
+    for (const level in demoLevelWiseData) {
+      const users = demoLevelWiseData[level] || [];
+      users.forEach((user) => {
+        flattenedData.push({
+          id: user.id,
+          userName: user.userName,
+          level: parseInt(level),
+          plan: user.plan,
+          joinDate: moment(user.joinDate).utcOffset(330).format("YYYY-MM-DD HH:mm:ss"),
+        });
+      });
+    }
+    return flattenedData;
+  })() : fullData;
 
   // Transform API data to match fullData structure
   const transformApiData = (levelWiseData) => {
@@ -110,7 +132,7 @@ const LevelWiseTeam = () => {
   };
 
   const filteredData = useMemo(() => {
-    let data = fullData;
+    let data = displayData;
     if (levelFilter) {
       data = data.filter((row) => row.level === parseInt(levelFilter));
     }
@@ -122,7 +144,7 @@ const LevelWiseTeam = () => {
       );
     }
     return data;
-  }, [fullData, levelFilter, globalFilter]);
+  }, [displayData, levelFilter, globalFilter]);
 
   const table = useReactTable({
     data: filteredData,
@@ -147,7 +169,7 @@ const LevelWiseTeam = () => {
   return (
     <div className="theme-card-style border-gradient text-gray-800 p-6 rounded-md max-w-full mx-auto">
       <div className="flex justify-between mb-6 gap-4 flex-wrap-reverse">
-        <h2 className="text-2xl text-primary font-bold">Level Wise Team</h2>
+        <h2 className="text-2xl text-blue-700 font-bold">Level Wise Team</h2>
         <button
           onClick={exportToExcel}
           className="px-3 py-1 h-fit text-base border flex items-center justify-center gap-2 border-gray-300 rounded bg-white hover:bg-gray-50 transition"
@@ -205,7 +227,7 @@ const LevelWiseTeam = () => {
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
-                        className="text-left px-4 py-2 border-b border-gray-200 text-primary text-nowrap"
+                        className="text-left px-4 py-2 border-b border-gray-200 text-blue-700 text-nowrap"
                       >
                         {flexRender(header.column.columnDef.header, header.getContext())}
                       </th>
@@ -232,35 +254,35 @@ const LevelWiseTeam = () => {
           </div>
 
           <div className="mt-6 flex md:flex-row flex-col gap-4 items-center justify-between text-sm">
-            <div className="text-secondary">
+            <div className="text-gray-600">
               Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
             </div>
             <div className="space-x-2 flex">
               <button
                 onClick={() => table.setPageIndex(0)}
                 disabled={!table.getCanPreviousPage()}
-                className="px-3 py-1 border text-xs md:text-sm rounded disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-3 py-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-xs md:text-sm rounded disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 First
               </button>
               <button
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
-                className="px-3 py-1 border text-xs md:text-sm rounded disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-3 py-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-xs md:text-sm rounded disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <FaAngleLeft />
               </button>
               <button
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
-                className="px-3 py-1 border text-xs md:text-sm rounded disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-3 py-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-xs md:text-sm rounded disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <FaAngleRight />
               </button>
               <button
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={!table.getCanNextPage()}
-                className="px-3 py-1 border text-xs md:text-sm rounded disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-3 py-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-xs md:text-sm rounded disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Last
               </button>

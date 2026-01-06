@@ -48,8 +48,8 @@ const Profits = lazy(() => import('../User/Pages/Profits'));
 
 // ProtectedRoute component
 const ProtectedRoute = () => {
-  // const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-  const token =  true;
+  const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+  // const token =  true;
   if (token) {
     return <Outlet />;
   }

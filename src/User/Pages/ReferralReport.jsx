@@ -16,6 +16,8 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { appConfig } from "../../config/appConfig";
 import SkeletonLoader from "../Components/Comman/Skeletons";
+import { useDemoMode } from '../Contexts/DemoModeContext';
+import { getDemoData } from '../Data/demoData';
 
 const columnHelper = createColumnHelper();
 
@@ -62,6 +64,7 @@ const columns = [
 ];
 
 const ReferralReport = () => {
+  const { isDemoMode } = useDemoMode();
   const [globalFilter, setGlobalFilter] = useState("");
   const [levelFilter, setLevelFilter] = useState("");
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
@@ -97,7 +100,7 @@ const ReferralReport = () => {
 
       return transformApiData(result.data.data);
     },
-    enabled: !!token,
+    enabled: !!token && !isDemoMode,
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000,
     onError: (err) => {
@@ -106,6 +109,12 @@ const ReferralReport = () => {
       }
     },
   });
+
+  // Use demo data if demo mode is active
+  const displayData = isDemoMode ? getDemoData("referralReport").map(item => ({
+    ...item,
+    date: moment(item.date).utcOffset(330).format("YYYY-MM-DD HH:mm:ss")
+  })) : referralData;
 
   // Transform API data to match referralData structure
   const transformApiData = (levelWiseData) => {
@@ -129,7 +138,7 @@ const ReferralReport = () => {
   };
 
   const filteredData = useMemo(() => {
-    let data = referralData;
+    let data = displayData;
     if (levelFilter) {
       data = data.filter((row) => row.level === levelFilter);
     }
@@ -166,7 +175,7 @@ const ReferralReport = () => {
   return (
     <div className="theme-card-style border-gradient text-gray-800 p-6 rounded-md max-w-full mx-auto">
       <div className="flex justify-between mb-6 gap-4 flex-wrap-reverse">
-        <h2 className="text-2xl text-primary font-bold">Referral Report</h2>
+        <h2 className="text-2xl text-blue-700 font-bold">Referral Report</h2>
         <button
           onClick={exportToExcel}
           className="px-3 py-1 h-fit text-base border flex items-center justify-center gap-2 border-gray-300 rounded bg-white hover:bg-gray-50 transition"
@@ -215,7 +224,7 @@ const ReferralReport = () => {
                           {headerGroup.headers.map((header) => (
                             <th
                               key={header.id}
-                              className="text-left px-4 py-2 border-b border-gray-200 text-primary text-nowrap"
+                              className="text-left px-4 py-2 border-b border-gray-200 text-blue-700 text-nowrap"
                             >
                               {flexRender(header.column.columnDef.header, header.getContext())}
                             </th>

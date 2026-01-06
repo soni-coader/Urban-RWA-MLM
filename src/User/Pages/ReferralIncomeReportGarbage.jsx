@@ -49,8 +49,8 @@ const columns = [
     cell: (info) => (
       <span
         className={`px-2 py-1 rounded text-xs font-semibold ${info.getValue() === "Credited"
-            ? "bg-green-800 text-green-300"
-            : "bg-yellow-800 text-yellow-300"
+          ? "bg-green-800 text-green-300"
+          : "bg-yellow-800 text-yellow-300"
           }`}
       >
         {info.getValue() || "N/A"}
@@ -171,7 +171,7 @@ const ReferralIncomeReportGarbage = () => {
   return (
     <div className="bg-[#12212154] backdrop-blur-xl border border-slate-700 border-gradient shadow-md shadow-slate-800/50 text-white p-6 rounded-md max-w-full mx-auto">
       <div className="flex justify-between mb-6 gap-4 flex-wrap-reverse">
-        <h2 className="text-2xl text-primary font-bold">Level Income Report</h2>
+        <h2 className="text-2xl text-blue-700 font-bold">Level Income Report</h2>
         <button
           onClick={exportToExcel}
           disabled={loading || data.length === 0}
@@ -189,14 +189,14 @@ const ReferralIncomeReportGarbage = () => {
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
           placeholder="Search name or date..."
-          className="flex-1 px-4 py-2 bg-transparent border border-slate-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-primary"
+          className="flex-1 px-4 py-2 bg-transparent border border-slate-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-700"
           disabled={loading}
           aria-label="Search by name or date"
         />
         <select
           value={levelFilter}
           onChange={(e) => setLevelFilter(e.target.value)}
-          className="px-4 py-2 bg-slate-700 border border-slate-500 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+          className="px-4 py-2 bg-slate-700 border border-slate-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-700"
           disabled={loading}
           aria-label="Filter by level"
         >
@@ -222,7 +222,7 @@ const ReferralIncomeReportGarbage = () => {
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
-                        className="text-left px-4 py-2 border-b border-slate-700 text-primary text-nowrap"
+                        className="text-left px-4 py-2 border-b border-slate-700 text-blue-700 text-nowrap"
                       >
                         {flexRender(header.column.columnDef.header, header.getContext())}
                       </th>

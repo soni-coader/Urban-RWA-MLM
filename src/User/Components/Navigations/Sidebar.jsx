@@ -95,12 +95,12 @@ const navItems = [
     ],
   },
   // ✅ External link (new tab)
-  {
-    icon: <FaRegFileAlt />,
-    name: "Business Plan",
-    path: "https://drive.google.com/file/d/1c8OmEyGEMmhpWhF73-_4h3OkK2oRAjTT/view?usp=sharing",
-    target: "_blank",
-  },
+  // {
+  //   icon: <FaRegFileAlt />,
+  //   name: "Business Plan",
+  //   path: "https://drive.google.com/file/d/1c8OmEyGEMmhpWhF73-_4h3OkK2oRAjTT/view?usp=sharing",
+  //   target: "_blank",
+  // },
   { icon: <FaUserCircle />, name: "Support", path: "support" },
   { icon: <FaUserCircle />, name: "Profile", path: "my-profile" },
   { icon: <FaSignOutAlt />, name: "Logout" },

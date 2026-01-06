@@ -283,7 +283,7 @@ const Withdrawals = () => {
       {/* Balance Info */}
       <div className="flex items-center justify-between bg-gray-50 border border-gray-200 px-4 py-3 rounded-md text-gray-600 text-sm">
         <div className="flex items-center gap-2">
-          <MdOutlineAccountBalanceWallet className="text-green-500 text-xl" />
+          <MdOutlineAccountBalanceWallet className="text-blue-500 text-xl" />
           Available Balance in {getWalletLabel(walletType)}:
         </div>
         <span className="text-gray-800 font-semibold">${balance[walletType]}</span>
@@ -362,7 +362,7 @@ const Withdrawals = () => {
       {/* Action Button */}
       <button
         onClick={showOtpInput ? handleOtpSubmit : handleWithdraw}
-        className="w-full py-2 rounded-md font-semibold text-white bg-gradient-to-r from-blue-500 to-green-500 hover:opacity-90 transition"
+        className="w-full py-2 rounded-md font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-500 hover:opacity-90 transition"
         disabled={loading}
       >
         {loading ? "Processing..." : showOtpInput ? "Submit OTP" : "Withdraw"}

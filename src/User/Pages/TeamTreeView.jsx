@@ -107,7 +107,7 @@ const TeamTreeView = () => {
               x={30}
               dy="5"
               fontSize={12}
-              fill="#1f2937"
+              fill="#1f1f37"
               stroke="#ffffff"
               strokeWidth={1}
               paintOrder="stroke"

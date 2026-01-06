@@ -36,7 +36,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="bg-white">
+      <div className="bg-white  ">
 
       <Header /> 
       <S1Hero />
